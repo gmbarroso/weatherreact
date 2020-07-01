@@ -8,7 +8,7 @@
 
 #mapid { height: 180px; }
 
-.card-group {
+.card-container {
   display: flex;
 }
 
@@ -22,13 +22,13 @@
     justify-content: center;
   }
 
-  .card-group {
+  .card-container {
     display: flex;
     flex-direction: column;
   }
 
-  .cartaz > img {
+  .card-size {
     width: 300px;
-    box-shadow: 0 4px 8px 0 grey, 0 6px 20px 0 grey;
+    margin: 20px;
   }
 }

@@ -4,19 +4,8 @@
   align-items: center;
   /* flex-wrap: wrap; */
   justify-content: space-between;
-  background-color: #2A662A;
+  background-color: #A4C7DD;
   color: white;
-}
-
-.logos {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 16px;
-}
-
-.facebookLogo, .instagramLogo {
-  padding: 0px 8px;
-  width: 24px;
 }
 
 @media screen and (max-width: 768px) {

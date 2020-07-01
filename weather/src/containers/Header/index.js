@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import { compose } from 'ramda'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
 
 const enhance = compose(withRouter)

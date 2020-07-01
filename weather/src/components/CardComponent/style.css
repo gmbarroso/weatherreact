@@ -1,0 +1,27 @@
+div {
+  margin-bottom: 10px;
+}
+.card-size {
+    width: 400px;
+    margin: 20px;
+  }
+
+.temperatures { 
+  display: flex;
+  flex-direction: column;
+}
+
+.max {
+  font-size: 24px;
+}
+
+.min {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .card-size {
+    width: 300px;
+    margin: 20px;
+  }
+}

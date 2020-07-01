@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { Card } from 'react-bootstrap';
 
@@ -17,7 +17,7 @@ const CardComponent = ({
       <Card.Body>
         <Card.Title>{cityName}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{weatherState}</Card.Subtitle>
-        <Card.Text>
+        <Fragment>
           <div className="temperatures">
             <span className="max">Máx: {maxTemp}ºC</span>
             <span className="min">Mín: {minTemp}ºC</span>
@@ -25,7 +25,7 @@ const CardComponent = ({
           <div>
             Chuva: {rainPrec}mm - {rainProb}%
           </div>
-        </Card.Text>
+        </Fragment>
         <Card.Link href="#">Card Link</Card.Link>
         <Card.Link href="#">Another Link</Card.Link>
       </Card.Body>

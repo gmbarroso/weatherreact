@@ -1,0 +1,34 @@
+.home {
+  display: flex;
+  padding: 64px 16px;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+#mapid { height: 180px; }
+
+.card-group {
+  display: flex;
+}
+
+.map {
+  width: 300px;
+}
+
+@media screen and (max-width: 768px) {
+  .home {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cartaz > img {
+    width: 300px;
+    box-shadow: 0 4px 8px 0 grey, 0 6px 20px 0 grey;
+  }
+}

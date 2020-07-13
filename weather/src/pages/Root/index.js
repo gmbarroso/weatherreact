@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import Header from '../../containers/Header'
@@ -14,19 +14,17 @@ import Home from '../../containers/Home'
 
 const enhance = compose(withRouter)
 
-class Root extends Component {
-  render () {
-    return (
-      <Fragment>
-        <Header />
-          <Switch>
-            <Route exact path="/home" component={Home} />
-            {/* <Route path="/obra" component={Obra} /> */}
-          </Switch>
-        {/* <Footer /> */}
-      </Fragment>
-    )
-  }
+const Root = () => {
+  return (
+    <Fragment>
+      <Header />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/home" component={Home} />
+        </Switch>
+      {/* <Footer /> */}
+    </Fragment>
+  )
 }
 
 Root.propTypes = {

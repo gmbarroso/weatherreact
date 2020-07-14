@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
 
-const Timer = ({ isReseted, seconds }) => {
+import { Button } from 'react-bootstrap';
+
+import './style.css'
+
+
+const Timer = ({
+  isReseted,
+  seconds,
+  available,
+}) => {
   const [timeLeft, setTimeLeft] = useState(seconds);
 
-  useEffect(() => {
-    if (!timeLeft) return;
+  const handleTimer = () => {
+    isReseted(false)
+    setTimeLeft(10800);
+  }
 
+  useEffect(() => {
     let interval = null
 
-    interval = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-
-    const handleTimer = (event) => {
-      console.log(event)
-      console.log(timeLeft)
+    if (isReseted) {
+      interval = setInterval(() => {
+        setTimeLeft(timeLeft => timeLeft - 1);
+      }, 1000);
+    } else if (timeLeft !== 10800) {
+      clearInterval(interval);
     }
-
-    handleTimer(isReseted)
 
     return () => clearInterval(interval);
   }, [timeLeft, isReseted, seconds]);
@@ -34,8 +43,18 @@ const Timer = ({ isReseted, seconds }) => {
   }
 
   return (
-    <div>
+    <div className="timer">
       <h5>{secondsToHms(timeLeft)}</h5>
+      {available &&
+      <div className="buttonTimer">
+        <Button
+            onClick = { () => handleTimer() }
+            variant="primary"
+          >
+              Atualizar agora
+        </Button>
+      </div>
+      }
     </div>
   );
 };

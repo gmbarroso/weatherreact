@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { Button } from 'react-bootstrap';
-
 import Card from '../../components/CardComponent'
 import Clock from '../../components/ClockComponent'
 import Timer from '../../components/Timer'
@@ -26,42 +24,44 @@ const Home = () => {
   const [ seconds, setSeconds ] = useState(10800)
   const [ reseted, setReseted ] = useState(false)
 
-  const handleTimer = (isReseted) => {
-    setSeconds(10800)
-    setReseted(true)
-    
-    if (isReseted) {
-      console.log(reseted)
-      clearInterval(seconds)
-      setReseted(false)
-    }
+  const token = ''
+  const br = 'pt-br'
+  const details = 'true'
+  const metric = 'true'
+  const location = '45881'
+  const forecast = async () => {
+    // const result = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${token}&language=${br}&details=${details}&metric=${metric}`)
+    // return result.json()
+    return console.log('Batida')
+  }
+
+  const handleReset = value => {
+    console.log('reset', reseted)
+    console.log('value', value)
+    return setReseted(value)
   }
 
   useEffect(() => {
-    const token = 'IuVWje9ULZCICrZhuBv4PCuLF4sGEX6P'
-    const br = 'pt-br'
-    const details = 'true'
-    const metric = 'true'
-    const location = '45881'
-    const forecast = async () => {
-      const result = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${token}&language=${br}&details=${details}&metric=${metric}`)
-      return result.json()
-    }
-
     if (comment === null) {
       const result = forecast()
       result.then(value => {
-        const forecast = value.DailyForecasts[0]
+        // const forecast = value.DailyForecasts[0]
 
-        console.log(forecast)
+        // console.log(forecast)
 
-        setComment(forecast.Day.IconPhrase)
-        setMin(forecast.Temperature.Minimum.Value)
-        setMax(forecast.Temperature.Maximum.Value)
-        setPrec(forecast.Day.RainProbability)
-        setProb(forecast.Day.RainProbability)
-        setMoon(forecast.Moon)
+        // setComment(forecast.Day.IconPhrase)
+        // setMin(forecast.Temperature.Minimum.Value)
+        // setMax(forecast.Temperature.Maximum.Value)
+        // setPrec(forecast.Day.RainProbability)
+        // setProb(forecast.Day.RainProbability)
+        // setMoon(forecast.Moon)
+        setReseted(true)
       })
+
+      // if (handleReset === false) {
+      //   console.log('hello')
+      //   forecast()
+      // }
     }
   }, [comment, min, max, prec, prob])
   return (
@@ -96,16 +96,11 @@ const Home = () => {
       </div>
       <div>
         <Timer
-          isReseted = { reseted }
+          isReseted = { handleReset }
           seconds = { seconds }
+          available = { true }
         />
       </div>
-        <Button
-          onClick = {handleTimer}
-          variant="primary"
-        >
-            Atualizar agora
-        </Button>
     </div>
   )
 }

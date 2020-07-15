@@ -30,32 +30,41 @@ const Home = () => {
   const metric = 'true'
   const location = '45881'
   const forecast = async () => {
-    // const result = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${token}&language=${br}&details=${details}&metric=${metric}`)
-    // return result.json()
-    return console.log('Batida')
+    const result = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${token}&language=${br}&details=${details}&metric=${metric}`)
+    return result.json()
+    // return console.log('Batida')
   }
 
   const handleReset = value => {
-    console.log('reset', reseted)
-    console.log('value', value)
-    return setReseted(value)
+    setReseted(value)
+    if(value) {
+      // forecast().then(value => {
+      //   console.log('dentro do handleReseted', value)
+      //   const forecast = value.DailyForecasts[0]
+
+      //   setComment(forecast.Day.IconPhrase)
+      //   setMin(forecast.Temperature.Minimum.Value)
+      //   setMax(forecast.Temperature.Maximum.Value)
+      //   setPrec(forecast.Day.RainProbability)
+      //   setProb(forecast.Day.RainProbability)
+      //   setMoon(forecast.Moon)
+      // })
+      console.log('Batida')
+    }
   }
 
   useEffect(() => {
     if (comment === null) {
       const result = forecast()
       result.then(value => {
-        // const forecast = value.DailyForecasts[0]
+        const forecast = value.DailyForecasts[0]
 
-        // console.log(forecast)
-
-        // setComment(forecast.Day.IconPhrase)
-        // setMin(forecast.Temperature.Minimum.Value)
-        // setMax(forecast.Temperature.Maximum.Value)
-        // setPrec(forecast.Day.RainProbability)
-        // setProb(forecast.Day.RainProbability)
-        // setMoon(forecast.Moon)
-        setReseted(true)
+        setComment(forecast.Day.IconPhrase)
+        setMin(forecast.Temperature.Minimum.Value)
+        setMax(forecast.Temperature.Maximum.Value)
+        setPrec(forecast.Day.RainProbability)
+        setProb(forecast.Day.RainProbability)
+        setMoon(forecast.Moon)
       })
 
       // if (handleReset === false) {
@@ -98,7 +107,7 @@ const Home = () => {
         <Timer
           isReseted = { handleReset }
           seconds = { seconds }
-          available = { true }
+          disabled = { false }
         />
       </div>
     </div>

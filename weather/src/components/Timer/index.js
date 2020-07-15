@@ -8,13 +8,22 @@ import './style.css'
 const Timer = ({
   isReseted,
   seconds,
-  available,
+  disabled,
 }) => {
   const [timeLeft, setTimeLeft] = useState(seconds);
+  const [ buttonDisabled, setButtonDisabled ] = useState(false)
 
   const handleTimer = () => {
-    isReseted(false)
-    setTimeLeft(10800);
+    isReseted(true)
+    setTimeLeft(seconds);
+    setButtonDisabled(true)
+
+    // console.log(buttonDisabled)
+    // if (!buttonDisabled) {
+    //   setInterval(() => {
+    //     setButtonDisabled(false);
+    //   }, 3000);
+    // }
   }
 
   useEffect(() => {
@@ -28,8 +37,14 @@ const Timer = ({
       clearInterval(interval);
     }
 
+    if (buttonDisabled) {
+      setInterval(() => {
+        setButtonDisabled(false);
+      }, 3000);
+    }
+
     return () => clearInterval(interval);
-  }, [timeLeft, isReseted, seconds]);
+  }, [timeLeft, isReseted, seconds, buttonDisabled]);
 
   const secondsToHms = (value) => {
     const h = Math.floor(value / 3600);
@@ -45,11 +60,12 @@ const Timer = ({
   return (
     <div className="timer">
       <h5>{secondsToHms(timeLeft)}</h5>
-      {available &&
+      {!disabled &&
       <div className="buttonTimer">
         <Button
             onClick = { () => handleTimer() }
             variant="primary"
+            disabled = { buttonDisabled }
           >
               Atualizar agora
         </Button>

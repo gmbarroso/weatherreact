@@ -29,6 +29,10 @@ const Timer = ({
   useEffect(() => {
     let interval = null
 
+    if (timeLeft === 0) {
+      handleTimer()
+    }
+
     if (isReseted) {
       interval = setInterval(() => {
         setTimeLeft(timeLeft => timeLeft - 1);
@@ -44,7 +48,7 @@ const Timer = ({
     }
 
     return () => clearInterval(interval);
-  }, [timeLeft, isReseted, seconds, buttonDisabled]);
+  });
 
   const secondsToHms = (value) => {
     const h = Math.floor(value / 3600);

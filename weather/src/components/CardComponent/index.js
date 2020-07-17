@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
-import { WiDaySunny } from "weather-icons-react";
+// import { WiDaySunny } from "weather-icons-react";
 import { Card } from 'react-bootstrap';
+import WeatherIcon from '../WeatherIconComponent/index'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
@@ -11,19 +12,6 @@ import './style.css'
 //   console.log('halo', typeof phase)
 // }
 
-const handleWeatherIcons = (moon) => {
-  const time = new Date()
-  const hour = time.getHours()
-
-  // handleMoonPhase(moon)
-
-  if (hour > 5 && hour < 18) {
-    return <WiDaySunny size={100}/>
-  }
-
-  return null
-}
-
 const CardComponent = ({
     cityName,
     minTemp,
@@ -32,15 +20,24 @@ const CardComponent = ({
     rainPrec,
     weatherState,
     moon,
+    period,
+    icon
 }) => (
     <Card className="card-size">
       <Card.Body>
-        <Card.Title>{cityName}</Card.Title>
+        <Card.Title>
+          <div className="cardTitle">
+            <span>{cityName}</span>
+            <span>{period}</span>
+          </div>
+        </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{weatherState}</Card.Subtitle>
         <Fragment>
           <div className="temperatures">
             <div className="weatherStatus">
-              {handleWeatherIcons(moon)}
+              <WeatherIcon
+                icon = { icon }
+              />
             </div>      
             <span className="max">Máx: {maxTemp} ºC</span>
             <span className="min">Mín: {minTemp} ºC</span>

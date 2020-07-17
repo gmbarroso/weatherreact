@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 
 import {
   withRouter,
@@ -17,7 +17,7 @@ const Header = () => {
     <div className="header">
       <h1>Weather</h1>
       <div className="links">
-        <Button variant="primary">Primary</Button>
+        {/* <Button variant="primary">Primary</Button> */}
       </div>
     </div>
   )

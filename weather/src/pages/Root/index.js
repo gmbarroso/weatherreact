@@ -8,11 +8,8 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom'
-import { compose } from 'ramda'
 
 import Home from '../../containers/Home'
-
-const enhance = compose(withRouter)
 
 const Root = () => {
   return (
@@ -33,4 +30,4 @@ Root.propTypes = {
   }).isRequired,
 }
 
-export default enhance(Root)
+export default withRouter(Root)

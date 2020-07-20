@@ -59,6 +59,18 @@ const Home = () => {
           setProbNight(forecast.PrecipitationProbability)
           setNightIcon(forecast.WeatherIcon)
         })
+      
+      getFiveDaysWeather()
+        .then(value => {
+          const forecast = value.DailyForecasts[1]
+
+          setCommentNextDay(forecast.Day.IconPhrase)
+          setMinNextDay(forecast.Temperature.Minimum.Value)
+          setMaxNextDay(forecast.Temperature.Maximum.Value)
+          setPrecNextDay(forecast.Day.Rain.Value)
+          setProbNextDay(forecast.Day.PrecipitationProbability)
+          setNextDayIcon(forecast.Day.Icon)
+        })
     }
   }
 

@@ -12,11 +12,16 @@ div {
 }
 
 .max {
-  font-size: 24px;
+  font-size: 32px;
 }
 
 .min {
   font-size: 16px;
+}
+
+.cardTitle {
+  display: flex;
+  justify-content: space-between;
 }
 
 .weatherStatus {

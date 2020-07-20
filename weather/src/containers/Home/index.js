@@ -1,43 +1,36 @@
 import React, { useState, useEffect } from 'react';
 
 import Card from '../../components/CardComponent'
-import Clock from '../../components/ClockComponent'
 import Timer from '../../components/Timer'
 
-import getWeather from '../../requests/getWeather'
+import getHourly from '../../requests/getHourly'
+import getTwelve from '../../requests/getTwelve'
+import getFiveDaysWeather from '../../requests/getFiveDaysWeather'
 
 import {
   withRouter,
 } from 'react-router-dom'
-import { compose } from 'ramda'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
 
-const enhance = compose(withRouter)
-
 const Home = () => {
   const [ comment, setComment ] = useState(null)
-  const [ min, setMin ] = useState(null)
   const [ max, setMax ] = useState(null)
   const [ prec, setPrec ] = useState(null)
   const [ prob, setProb ] = useState(null)
-  const [ moon, setMoon ] = useState(null)
   const [ dayIcon, setDayIcon ] = useState(null)
   const [ commentNight, setCommentNight ] = useState(null)
-  const [ minNight, setMinNight ] = useState(null)
   const [ maxNight, setMaxNight ] = useState(null)
   const [ precNight, setPrecNight ] = useState(null)
   const [ probNight, setProbNight ] = useState(null)
-  const [ moonNight, setMoonNight ] = useState(null)
   const [ nightIcon, setNightIcon ] = useState(null)
-  const [ commentNext, setCommentNext ] = useState(null)
-  const [ minNext, setMinNext ] = useState(null)
-  const [ maxNext, setMaxNext ] = useState(null)
-  const [ precNext, setPrecNext ] = useState(null)
-  const [ probNext, setProbNext ] = useState(null)
-  const [ moonNext, setMoonNext ] = useState(null)
-  const [ nextIcon, setNextIcon ] = useState(null)
+  const [ commentNextDay, setCommentNextDay ] = useState(null)
+  const [ minNextDay, setMinNextDay ] = useState(null)
+  const [ maxNextDay, setMaxNextDay ] = useState(null)
+  const [ precNextDay, setPrecNextDay ] = useState(null)
+  const [ probNextDay, setProbNextDay ] = useState(null)
+  const [ nextDayIcon, setNextDayIcon ] = useState(null)
   const [ seconds, setSeconds ] = useState(10800)
   const [ reseted, setReseted ] = useState(false)
 
@@ -45,67 +38,64 @@ const Home = () => {
   const handleReset = value => {
     setReseted(value)
     if(value) {
-      getWeather()
+      getHourly()
         .then(value => {
-          const forecast = value.DailyForecasts[0]
+          const forecast = value[0]
 
-          setComment(forecast.Day.IconPhrase)
-          setMin(forecast.Temperature.Minimum.Value)
-          setMax(forecast.Temperature.Maximum.Value)
-          setPrec(forecast.Day.RainProbability)
-          setProb(forecast.Day.RainProbability)
-          setMoon(forecast.Moon)
-          setDayIcon(forecast.Day.Icon)
+          setComment(forecast.IconPhrase)
+          setMax(forecast.Temperature.Value)
+          setPrec(forecast.Rain.Value)
+          setProb(forecast.PrecipitationProbability)
+          setDayIcon(forecast.WeatherIcon)
+        })
+      
+      getTwelve()
+        .then(value => {
+          const forecast = value[11]
 
-          setCommentNight(forecast.Night.IconPhrase)
-          setMinNight(forecast.Temperature.Minimum.Value)
-          setMaxNight(forecast.Temperature.Maximum.Value)
-          setPrecNight(forecast.Night.RainProbability)
-          setProbNight(forecast.Night.RainProbability)
-          setMoonNight(forecast.Moon)
-          setNightIcon(forecast.Night.Icon)
-
-          setCommentNext(forecast.Day.IconPhrase)
-          setMinNext(forecast.Temperature.Minimum.Value)
-          setMaxNext(forecast.Temperature.Maximum.Value)
-          setPrecNext(forecast.Day.RainProbability)
-          setProbNext(forecast.Day.RainProbability)
-          setMoonNext(forecast.Moon)
-          setNextIcon(forecast.Day.Icon)
+          setCommentNight(forecast.IconPhrase)
+          setMaxNight(forecast.Temperature.Value)
+          setPrecNight(forecast.Rain.Value)
+          setProbNight(forecast.PrecipitationProbability)
+          setNightIcon(forecast.WeatherIcon)
         })
     }
   }
 
   useEffect(() => {
     if (comment === null) {
-      getWeather()
+      getHourly()
         .then(value => {
-          const forecast = value.DailyForecasts[0]
-          console.log(forecast)
+          const forecast = value[0]
 
-          setComment(forecast.Day.IconPhrase)
-          setMin(forecast.Temperature.Minimum.Value)
-          setMax(forecast.Temperature.Maximum.Value)
-          setPrec(forecast.Day.RainProbability)
-          setProb(forecast.Day.RainProbability)
-          setMoon(forecast.Moon)
-          setDayIcon(forecast.Day.Icon)
+          setComment(forecast.IconPhrase)
+          setMax(forecast.Temperature.Value)
+          setPrec(forecast.Rain.Value)
+          setProb(forecast.PrecipitationProbability)
+          setDayIcon(forecast.WeatherIcon)
+        })
+      
+      getTwelve()
+        .then(value => {
+          const forecast = value[11]
+          
+          setCommentNight(forecast.IconPhrase)
+          setMaxNight(forecast.Temperature.Value)
+          setPrecNight(forecast.Rain.Value)
+          setProbNight(forecast.PrecipitationProbability)
+          setNightIcon(forecast.WeatherIcon)
+        })
+      
+      getFiveDaysWeather()
+        .then(value => {
+          const forecast = value.DailyForecasts[1]
 
-          setCommentNight(forecast.Night.IconPhrase)
-          setMinNight(forecast.Temperature.Minimum.Value)
-          setMaxNight(forecast.Temperature.Maximum.Value)
-          setPrecNight(forecast.Night.RainProbability)
-          setProbNight(forecast.Night.RainProbability)
-          setMoonNight(forecast.Moon)
-          setNightIcon(forecast.Night.Icon)
-
-          setCommentNext(forecast.Day.IconPhrase)
-          setMinNext(forecast.Temperature.Minimum.Value)
-          setMaxNext(forecast.Temperature.Maximum.Value)
-          setPrecNext(forecast.Day.RainProbability)
-          setProbNext(forecast.Day.RainProbability)
-          setMoonNext(forecast.Moon)
-          setNextIcon(forecast.Day.Icon)
+          setCommentNextDay(forecast.Day.IconPhrase)
+          setMinNextDay(forecast.Temperature.Minimum.Value)
+          setMaxNextDay(forecast.Temperature.Maximum.Value)
+          setPrecNextDay(forecast.Day.Rain.Value)
+          setProbNextDay(forecast.Day.PrecipitationProbability)
+          setNextDayIcon(forecast.Day.Icon)
         })
 
       // if (handleReset === false) {
@@ -113,27 +103,23 @@ const Home = () => {
       //   forecast()
       // }
     }
-  }, [comment, min, max, prec, prob, moon, seconds])
+  }, [comment, max, prec, prob, seconds])
   return (
     <div className="home">
-        <Clock />
       <div className="card-container">
         <Card
-          period = "Hoje"
+          period = "Agora"
           cityName = "São Paulo"
           weatherState = { comment }
-          minTemp = { min }
           maxTemp = { max }
           rainPrec = { prec }
           rainProb = { prob }
-          moon = { moon }
           icon = { dayIcon }
         />
         <Card
           period = "12h"
           cityName = "São Paulo"
           weatherState = { commentNight }
-          minTemp = { minNight }
           maxTemp = { maxNight }
           rainPrec = { precNight }
           rainProb = { probNight }
@@ -142,12 +128,12 @@ const Home = () => {
         <Card
           period = "24h"
           cityName = "São Paulo"
-          weatherState = { commentNext }
-          minTemp = { minNext }
-          maxTemp = { maxNext }
-          rainPrec = { precNext }
-          rainProb = { probNext }
-          icon = { nextIcon }
+          weatherState = { commentNextDay }
+          minTemp = { minNextDay }
+          maxTemp = { maxNextDay }
+          rainPrec = { precNextDay }
+          rainProb = { probNextDay }
+          icon = { nextDayIcon }
         />
       </div>
       <div>
@@ -161,4 +147,4 @@ const Home = () => {
   )
 }
 
-export default enhance(Home)
+export default withRouter(Home)

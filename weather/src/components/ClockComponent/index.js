@@ -14,7 +14,7 @@ const ClockComponent = () => {
 
    return (
       <div>
-        <h5>{date.toLocaleTimeString()}.</h5>
+        <h5>{date.getUTCDate()} / {date.getUTCMonth()} / {date.getUTCFullYear()} - {date.toLocaleTimeString()}</h5>
       </div>
     );
 }

@@ -80,9 +80,6 @@ const mostlyCloudyWithStormsNight = icon42
 const mostlyCloudyWithFlurriesNight = icon43
 const mostlyCloudyWithSnowNight = icon44
 
-console.log('1', sunny)
-console.log('11', fog)
-
 export {
   sunny,
   mostlySunny,

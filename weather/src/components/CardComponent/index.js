@@ -6,12 +6,6 @@ import WeatherIcon from '../WeatherIconComponent/index'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
 
-// const handleMoonPhase = moon => {
-//   const phase = moon
-
-//   console.log('halo', typeof phase)
-// }
-
 const CardComponent = ({
     cityName,
     minTemp,
@@ -19,7 +13,6 @@ const CardComponent = ({
     rainProb,
     rainPrec,
     weatherState,
-    moon,
     period,
     icon
 }) => (
@@ -39,11 +32,13 @@ const CardComponent = ({
                 icon = { icon }
               />
             </div>      
-            <span className="max">Máx: {maxTemp} ºC</span>
-            <span className="min">Mín: {minTemp} ºC</span>
+            <span className="max">{maxTemp} ºC</span>
+            {minTemp &&
+              <span className="min">{minTemp} ºC</span>
+            }
           </div>
           <div>
-            Chuva: {rainPrec} mm - {rainProb} %
+            {rainPrec} mm - {rainProb} %
           </div>
         </Fragment>
       </Card.Body>

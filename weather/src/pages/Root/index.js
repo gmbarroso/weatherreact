@@ -19,7 +19,6 @@ const Root = () => {
           <Route exact path="/" component={Home} />
           <Route path="/home" component={Home} />
         </Switch>
-      {/* <Footer /> */}
     </Fragment>
   )
 }

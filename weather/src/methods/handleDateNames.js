@@ -1,4 +1,4 @@
-const getWeekDays = day => {
+export const getWeekDays = day => {
     switch (day) {
         case 1:
             return "Seg"
@@ -17,7 +17,7 @@ const getWeekDays = day => {
     }
 }
 
-const getMonthNames = day => {
+export const getMonthNames = day => {
     switch (day) {
         case 1:
             return "Fev"
@@ -45,10 +45,3 @@ const getMonthNames = day => {
             return "Jan"
     }
 }
-
-const methods = {
-    getWeekDays,
-    getMonthNames
-}
-
-export default methods

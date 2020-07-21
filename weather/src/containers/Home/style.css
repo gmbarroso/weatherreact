@@ -10,10 +10,16 @@
 
 .card-container {
   display: flex;
+  margin-bottom: 0;
 }
 
 .map {
   width: 300px;
+}
+
+.source {
+  font-size: 10px;
+  margin-bottom: 0;
 }
 
 @media screen and (max-width: 768px) {

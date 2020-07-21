@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import { Button } from 'react-bootstrap';
 
 import './style.css'
-
 
 const Timer = ({
   isReseted,
@@ -13,42 +12,29 @@ const Timer = ({
   const [timeLeft, setTimeLeft] = useState(seconds);
   const [ buttonDisabled, setButtonDisabled ] = useState(false)
 
-  const handleTimer = () => {
-    isReseted(true)
+  const handleTimer = useCallback(() => {
     setTimeLeft(seconds);
-    setButtonDisabled(true)
-
-    // console.log(buttonDisabled)
-    // if (!buttonDisabled) {
-    //   setInterval(() => {
-    //     setButtonDisabled(false);
-    //   }, 3000);
-    // }
-  }
+    setButtonDisabled(isReseted)
+  }, [seconds, isReseted])
 
   useEffect(() => {
     let interval = null
 
     if (timeLeft === 0) {
       handleTimer()
+      setButtonDisabled(!isReseted)
     }
 
     if (isReseted) {
       interval = setInterval(() => {
-        setTimeLeft(timeLeft => timeLeft - 1);
+        setTimeLeft(timeLeft => timeLeft - 1)
       }, 1000);
     } else if (timeLeft !== 10800) {
       clearInterval(interval);
     }
 
-    if (buttonDisabled) {
-      setInterval(() => {
-        setButtonDisabled(false);
-      }, 3000);
-    }
-
-    return () => clearInterval(interval);
-  });
+    return () => clearInterval(interval)
+  }, [timeLeft, isReseted, handleTimer]);
 
   const secondsToHms = (value) => {
     const h = Math.floor(value / 3600);
@@ -63,6 +49,7 @@ const Timer = ({
 
   return (
     <div className="timer">
+      <h5>Atualiza em</h5>
       <h5>{secondsToHms(timeLeft)}</h5>
       {!disabled &&
       <div className="buttonTimer">

@@ -1,8 +1,14 @@
 .timer {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
+/* .btn-primary {
+  background-color: #A4C7DD;
+  border-color: #A4C7DD;
+} */
 
 .buttonTimer {
   display: flex;

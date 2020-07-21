@@ -5,7 +5,7 @@ import Timer from '../../components/Timer'
 
 import getHourly from '../../requests/getHourly'
 import getTwelve from '../../requests/getTwelve'
-import getFiveDaysWeather from '../../requests/getFiveDaysWeather'
+import getNextDayWeather from '../../requests/getNextDayWeather'
 
 import {
   withRouter,
@@ -14,138 +14,142 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
 
+const weatherObject = {
+  comment: null,
+  max: null,
+  min: null,
+  prec: null,
+  prob: null,
+  dayIcon: null
+}
+
 const Home = () => {
-  const [ comment, setComment ] = useState(null)
-  const [ max, setMax ] = useState(null)
-  const [ prec, setPrec ] = useState(null)
-  const [ prob, setProb ] = useState(null)
-  const [ dayIcon, setDayIcon ] = useState(null)
-  const [ commentNight, setCommentNight ] = useState(null)
-  const [ maxNight, setMaxNight ] = useState(null)
-  const [ precNight, setPrecNight ] = useState(null)
-  const [ probNight, setProbNight ] = useState(null)
-  const [ nightIcon, setNightIcon ] = useState(null)
-  const [ commentNextDay, setCommentNextDay ] = useState(null)
-  const [ minNextDay, setMinNextDay ] = useState(null)
-  const [ maxNextDay, setMaxNextDay ] = useState(null)
-  const [ precNextDay, setPrecNextDay ] = useState(null)
-  const [ probNextDay, setProbNextDay ] = useState(null)
-  const [ nextDayIcon, setNextDayIcon ] = useState(null)
+  const [ hourly, setHourly ] = useState(weatherObject)
+  const [ twelve, setTwelve ] = useState(weatherObject)
+  const [ nextDay, setNextDay ] = useState(weatherObject)
   const [ seconds, setSeconds ] = useState(10800)
-  const [ reseted, setReseted ] = useState(false)
 
 
   const handleReset = value => {
-    setReseted(value)
     if(value) {
       getHourly()
         .then(value => {
           const forecast = value[0]
 
-          setComment(forecast.IconPhrase)
-          setMax(forecast.Temperature.Value)
-          setPrec(forecast.Rain.Value)
-          setProb(forecast.PrecipitationProbability)
-          setDayIcon(forecast.WeatherIcon)
+          setHourly({
+            comment: forecast.IconPhrase,
+            max: forecast.Temperature.Value,
+            prec: forecast.Rain.Value,
+            prob: forecast.PrecipitationProbability,
+            dayIcon: forecast.WeatherIcon
+          })
         })
       
       getTwelve()
         .then(value => {
           const forecast = value[11]
 
-          setCommentNight(forecast.IconPhrase)
-          setMaxNight(forecast.Temperature.Value)
-          setPrecNight(forecast.Rain.Value)
-          setProbNight(forecast.PrecipitationProbability)
-          setNightIcon(forecast.WeatherIcon)
+          setTwelve({
+            comment: forecast.IconPhrase,
+            max: forecast.Temperature.Value,
+            prec: forecast.Rain.Value,
+            prob: forecast.PrecipitationProbability,
+            dayIcon: forecast.WeatherIcon
+          })
         })
       
-      getFiveDaysWeather()
+      getNextDayWeather()
         .then(value => {
           const forecast = value.DailyForecasts[1]
 
-          setCommentNextDay(forecast.Day.IconPhrase)
-          setMinNextDay(forecast.Temperature.Minimum.Value)
-          setMaxNextDay(forecast.Temperature.Maximum.Value)
-          setPrecNextDay(forecast.Day.Rain.Value)
-          setProbNextDay(forecast.Day.PrecipitationProbability)
-          setNextDayIcon(forecast.Day.Icon)
+          setNextDay({
+            comment: forecast.Day.IconPhrase,
+            max: forecast.Temperature.Maximun.Value,
+            min: forecast.Temperature.Minimum.Value,
+            prec: forecast.Day.Rain.Value,
+            prob: forecast.Day.PrecipitationProbability,
+            dayIcon: forecast.Day.Icon
+          })
         })
     }
+
+    return true
   }
 
   useEffect(() => {
-    if (comment === null) {
+    if (hourly.comment === null) {
       getHourly()
         .then(value => {
           const forecast = value[0]
-
-          setComment(forecast.IconPhrase)
-          setMax(forecast.Temperature.Value)
-          setPrec(forecast.Rain.Value)
-          setProb(forecast.PrecipitationProbability)
-          setDayIcon(forecast.WeatherIcon)
+          
+          setHourly({
+            comment: forecast.IconPhrase,
+            max: forecast.Temperature.Value,
+            prec: forecast.Rain.Value,
+            prob: forecast.PrecipitationProbability,
+            dayIcon: forecast.WeatherIcon
+          })
+          console.log(forecast)
         })
       
-      getTwelve()
+        getTwelve()
         .then(value => {
           const forecast = value[11]
-          
-          setCommentNight(forecast.IconPhrase)
-          setMaxNight(forecast.Temperature.Value)
-          setPrecNight(forecast.Rain.Value)
-          setProbNight(forecast.PrecipitationProbability)
-          setNightIcon(forecast.WeatherIcon)
+
+          setTwelve({
+            comment: forecast.IconPhrase,
+            max: forecast.Temperature.Value,
+            prec: forecast.Rain.Value,
+            prob: forecast.PrecipitationProbability,
+            dayIcon: forecast.WeatherIcon
+          })
         })
       
-      getFiveDaysWeather()
+      getNextDayWeather()
         .then(value => {
           const forecast = value.DailyForecasts[1]
 
-          setCommentNextDay(forecast.Day.IconPhrase)
-          setMinNextDay(forecast.Temperature.Minimum.Value)
-          setMaxNextDay(forecast.Temperature.Maximum.Value)
-          setPrecNextDay(forecast.Day.Rain.Value)
-          setProbNextDay(forecast.Day.PrecipitationProbability)
-          setNextDayIcon(forecast.Day.Icon)
+          setNextDay({
+            comment: forecast.Day.IconPhrase,
+            max: forecast.Temperature.Maximum.Value,
+            min: forecast.Temperature.Minimum.Value,
+            prec: forecast.Day.Rain.Value,
+            prob: forecast.Day.PrecipitationProbability,
+            dayIcon: forecast.Day.Icon
+          })
         })
-
-      // if (handleReset === false) {
-      //   console.log('hello')
-      //   forecast()
-      // }
     }
-  }, [comment, max, prec, prob, seconds])
+  }, [hourly])
   return (
     <div className="home">
       <div className="card-container">
         <Card
           period = "Agora"
           cityName = "São Paulo"
-          weatherState = { comment }
-          maxTemp = { max }
-          rainPrec = { prec }
-          rainProb = { prob }
-          icon = { dayIcon }
+          weatherState = { hourly.comment }
+          maxTemp = { hourly.max }
+          rainPrec = { hourly.prprec }
+          rainProb = { hourly.prob }
+          icon = { hourly.dayIcon }
         />
         <Card
-          period = "12h"
+          period = " Próximas 12h"
           cityName = "São Paulo"
-          weatherState = { commentNight }
-          maxTemp = { maxNight }
-          rainPrec = { precNight }
-          rainProb = { probNight }
-          icon = { nightIcon }
+          weatherState = { twelve.comment }
+          maxTemp = { twelve.max }
+          rainPrec = { twelve.prprec }
+          rainProb = { twelve.prob }
+          icon = { twelve.dayIcon }
         />
         <Card
-          period = "24h"
+          period = "Amanhã"
           cityName = "São Paulo"
-          weatherState = { commentNextDay }
-          minTemp = { minNextDay }
-          maxTemp = { maxNextDay }
-          rainPrec = { precNextDay }
-          rainProb = { probNextDay }
-          icon = { nextDayIcon }
+          weatherState = { nextDay.comment }
+          minTemp = { nextDay.min }
+          maxTemp = { nextDay.max }
+          rainPrec = { nextDay.prprec }
+          rainProb = { nextDay.prob }
+          icon = { nextDay.dayIcon }
         />
       </div>
       <div>
@@ -155,6 +159,7 @@ const Home = () => {
           disabled = { false }
         />
       </div>
+      <div className="source">Source: <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
     </div>
   )
 }

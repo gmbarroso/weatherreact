@@ -1,11 +1,36 @@
 .header {
   display: flex;
   padding: 8px 48px;
-  align-items: flex-end;
+  align-items: center;
   /* flex-wrap: wrap; */
   justify-content: space-between;
   background-color: #A4C7DD;
   color: white;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.marginBtm {
+  margin-bottom: 0;
+}
+
+.logos{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0;
+}
+
+.git {
+  width: 20px;
+  margin-right: 5px;
+}
+
+.linkedIn {
+  width: 25px;
 }
 
 @media screen and (max-width: 768px) {
@@ -13,5 +38,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  h1 {
+    font-size: 2.0rem;
+  }
+
+  .logos{
+    justify-content: center;
   }
 }

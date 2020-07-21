@@ -12,11 +12,6 @@
   .header {
     flex-direction: column;
     justify-content: center;
-  }
-
-  .links {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: center;
+    align-items: center;
   }
 }

@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <div className="header">
       <h1>Weather Channel</h1>
-      <div className="links">
+      <div>
         <Clock />
       </div>
     </div>

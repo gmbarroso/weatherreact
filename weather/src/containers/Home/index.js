@@ -6,6 +6,9 @@ import Timer from '../../components/Timer'
 import getHourly from '../../requests/getHourly'
 import getTwelve from '../../requests/getTwelve'
 import getNextDayWeather from '../../requests/getNextDayWeather'
+import getUserLocation from '../../requests/getUserLocation'
+
+import useGeolocation from '../../hooks/useGeolocation'
 
 import {
   withRouter,
@@ -15,6 +18,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
 
 const weatherObject = {
+  cityName: null,
   comment: null,
   max: null,
   min: null,
@@ -23,54 +27,66 @@ const weatherObject = {
   dayIcon: null
 }
 
+const geoLocationOptions = {
+  timeout: 1000 * 60 * 1 // 1 minute
+}
+
 const Home = () => {
+  const { latitude, longitude, error } = useGeolocation(geoLocationOptions)
   const [ hourly, setHourly ] = useState(weatherObject)
   const [ twelve, setTwelve ] = useState(weatherObject)
   const [ nextDay, setNextDay ] = useState(weatherObject)
   const [ seconds, setSeconds ] = useState(10800)
 
+  const showError = () => alert(error)
 
   const handleReset = value => {
     if(value) {
-      getHourly()
-        .then(value => {
-          const forecast = value[0]
+      getUserLocation(latitude, longitude)
+      .then(location => {
+        if(location) {
+          const key = location.Key
+          getHourly(key)
+            .then(value => {
+              const forecast = value[0]
+              
+              setHourly({
+                comment: forecast.IconPhrase,
+                max: forecast.Temperature.Value,
+                prec: forecast.Rain.Value,
+                prob: forecast.PrecipitationProbability,
+                dayIcon: forecast.WeatherIcon
+              })
+            })
 
-          setHourly({
-            comment: forecast.IconPhrase,
-            max: forecast.Temperature.Value,
-            prec: forecast.Rain.Value,
-            prob: forecast.PrecipitationProbability,
-            dayIcon: forecast.WeatherIcon
-          })
-        })
+            getTwelve(key)
+            .then(value => {
+              const forecast = value[11]
+    
+              setTwelve({
+                comment: forecast.IconPhrase,
+                max: forecast.Temperature.Value,
+                prec: forecast.Rain.Value,
+                prob: forecast.PrecipitationProbability,
+                dayIcon: forecast.WeatherIcon
+              })
+            })
+
+            getNextDayWeather(key)
+              .then(value => {
+                const forecast = value.DailyForecasts[1]
       
-      getTwelve()
-        .then(value => {
-          const forecast = value[11]
-
-          setTwelve({
-            comment: forecast.IconPhrase,
-            max: forecast.Temperature.Value,
-            prec: forecast.Rain.Value,
-            prob: forecast.PrecipitationProbability,
-            dayIcon: forecast.WeatherIcon
-          })
-        })
-      
-      getNextDayWeather()
-        .then(value => {
-          const forecast = value.DailyForecasts[1]
-
-          setNextDay({
-            comment: forecast.Day.IconPhrase,
-            max: forecast.Temperature.Maximun.Value,
-            min: forecast.Temperature.Minimum.Value,
-            prec: forecast.Day.Rain.Value,
-            prob: forecast.Day.PrecipitationProbability,
-            dayIcon: forecast.Day.Icon
-          })
-        })
+                setNextDay({
+                  comment: forecast.Day.IconPhrase,
+                  max: forecast.Temperature.Maximum.Value,
+                  min: forecast.Temperature.Minimum.Value,
+                  prec: forecast.Day.Rain.Value,
+                  prob: forecast.Day.PrecipitationProbability,
+                  dayIcon: forecast.Day.Icon
+                })
+              })
+        }
+      })
     }
 
     return true
@@ -78,48 +94,53 @@ const Home = () => {
 
   useEffect(() => {
     if (hourly.comment === null) {
-      getHourly()
-        .then(value => {
-          const forecast = value[0]
-          
-          setHourly({
-            comment: forecast.IconPhrase,
-            max: forecast.Temperature.Value,
-            prec: forecast.Rain.Value,
-            prob: forecast.PrecipitationProbability,
-            dayIcon: forecast.WeatherIcon
-          })
-          console.log(forecast)
-        })
-      
-        getTwelve()
-        .then(value => {
-          const forecast = value[11]
+      getUserLocation(latitude, longitude)
+        .then(location => {
+          if(location) {
+            const key = location.Key
+            getHourly(key)
+              .then(value => {
+                const forecast = value[0]
+                
+                setHourly({
+                  comment: forecast.IconPhrase,
+                  max: forecast.Temperature.Value,
+                  prec: forecast.Rain.Value,
+                  prob: forecast.PrecipitationProbability,
+                  dayIcon: forecast.WeatherIcon
+                })
+              })
 
-          setTwelve({
-            comment: forecast.IconPhrase,
-            max: forecast.Temperature.Value,
-            prec: forecast.Rain.Value,
-            prob: forecast.PrecipitationProbability,
-            dayIcon: forecast.WeatherIcon
-          })
-        })
+              getTwelve(key)
+              .then(value => {
+                const forecast = value[11]
       
-      getNextDayWeather()
-        .then(value => {
-          const forecast = value.DailyForecasts[1]
+                setTwelve({
+                  comment: forecast.IconPhrase,
+                  max: forecast.Temperature.Value,
+                  prec: forecast.Rain.Value,
+                  prob: forecast.PrecipitationProbability,
+                  dayIcon: forecast.WeatherIcon
+                })
+              })
 
-          setNextDay({
-            comment: forecast.Day.IconPhrase,
-            max: forecast.Temperature.Maximum.Value,
-            min: forecast.Temperature.Minimum.Value,
-            prec: forecast.Day.Rain.Value,
-            prob: forecast.Day.PrecipitationProbability,
-            dayIcon: forecast.Day.Icon
-          })
+              getNextDayWeather(key)
+                .then(value => {
+                  const forecast = value.DailyForecasts[1]
+        
+                  setNextDay({
+                    comment: forecast.Day.IconPhrase,
+                    max: forecast.Temperature.Maximum.Value,
+                    min: forecast.Temperature.Minimum.Value,
+                    prec: forecast.Day.Rain.Value,
+                    prob: forecast.Day.PrecipitationProbability,
+                    dayIcon: forecast.Day.Icon
+                  })
+                })
+          }
         })
     }
-  }, [hourly])
+  }, [hourly, latitude, longitude])
   return (
     <div className="home">
       <div className="card-container">
@@ -160,7 +181,10 @@ const Home = () => {
         />
       </div>
       <div className="source">Source: <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
-    </div>
+      {error && 
+        showError()
+      }
+  </div>
   )
 }
 

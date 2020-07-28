@@ -5,14 +5,25 @@
   align-items: center;
 }
 
-/* .btn-primary {
-  background-color: #A4C7DD;
-  border-color: #A4C7DD;
-} */
-
 .buttonTimer {
   display: flex;
   justify-content: center;
   margin-top: 10px;
   width: 200px;
+}
+
+.btn-primary,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:disabled,
+.btn-primary:disabled:hover {
+  color: #fff;
+  background-color: #e96913;
+  border-color: #e96913;
+}
+
+.btn-primary:hover {
+  color: #e96913;
+  background-color: #fff;
+  border-color: #e96913;
 }

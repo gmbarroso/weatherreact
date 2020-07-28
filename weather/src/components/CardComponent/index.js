@@ -37,9 +37,14 @@ const CardComponent = ({
               <span className="min">{minTemp} ºC</span>
             }
           </div>
-          <div>
-            {rainPrec} mm - {rainProb} %
-          </div>
+          {rainPrec &&
+            <div>
+              {rainPrec} mm - {rainProb} %
+            </div>
+          }
+          {!rainPrec &&
+            <div>Sem previsão de chuva</div>
+          }
         </Fragment>
       </Card.Body>
     </Card>

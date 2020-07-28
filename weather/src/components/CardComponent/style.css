@@ -1,9 +1,13 @@
 div {
   margin-bottom: 10px;
 }
+
 .card-size {
     width: 400px;
     margin: 20px;
+    border-radius: 16px;
+    /* border-color: #F05514; */
+    color: #000;
   }
 
 .temperatures { 

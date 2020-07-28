@@ -5,7 +5,7 @@ import Root from './pages/Root'
 
 const App = () => {
   return (
-    <div className="App" style={{backgorundColor: '#e5e5e0'}}>
+    <div className="App">
       <BrowserRouter>
         <Root />
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
 import Card from '../../components/CardComponent'
 import Timer from '../../components/Timer'
@@ -9,6 +9,7 @@ import getNextDayWeather from '../../requests/getNextDayWeather'
 import getUserLocation from '../../requests/getUserLocation'
 
 import useGeolocation from '../../hooks/useGeolocation'
+import useDarkTheme from '../../hooks/useDarkTheme'
 
 import {
   withRouter,
@@ -16,6 +17,7 @@ import {
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
+import './toggleButtonStyle.css'
 
 const weatherObject = {
   cityName: null,
@@ -37,8 +39,11 @@ const Home = () => {
   const [ twelve, setTwelve ] = useState(weatherObject)
   const [ nextDay, setNextDay ] = useState(weatherObject)
   const [ seconds, setSeconds ] = useState(10800)
-
+  const [ isChecked, setChecked ] = useState(false)
+  
   const showError = () => alert(error)
+  
+  useDarkTheme(isChecked)
 
   const handleReset = value => {
     if(value) {
@@ -92,6 +97,8 @@ const Home = () => {
     return true
   }
 
+  const handleClick = () => setChecked(!isChecked)
+
   useEffect(() => {
     if (hourly.comment === null) {
       getUserLocation(latitude, longitude)
@@ -142,49 +149,58 @@ const Home = () => {
     }
   }, [hourly, latitude, longitude])
   return (
-    <div className="home">
-      <div className="card-container">
-        <Card
-          period = "Agora"
-          cityName = "São Paulo"
-          weatherState = { hourly.comment }
-          maxTemp = { hourly.max }
-          rainPrec = { hourly.prprec }
-          rainProb = { hourly.prob }
-          icon = { hourly.dayIcon }
-        />
-        <Card
-          period = " Próximas 12h"
-          cityName = "São Paulo"
-          weatherState = { twelve.comment }
-          maxTemp = { twelve.max }
-          rainPrec = { twelve.prprec }
-          rainProb = { twelve.prob }
-          icon = { twelve.dayIcon }
-        />
-        <Card
-          period = "Amanhã"
-          cityName = "São Paulo"
-          weatherState = { nextDay.comment }
-          minTemp = { nextDay.min }
-          maxTemp = { nextDay.max }
-          rainPrec = { nextDay.prprec }
-          rainProb = { nextDay.prob }
-          icon = { nextDay.dayIcon }
-        />
+    <Fragment>
+      <div className="toggleDiv">
+        <span>Mudar Tema:</span>
+        <label className="switch">
+          <input onChange={handleClick} checked={isChecked} type="checkbox" />
+          <span className="slider round"></span>
+        </label>
       </div>
-      <div>
-        <Timer
-          isReseted = { handleReset }
-          seconds = { seconds }
-          disabled = { false }
-        />
+      <div className="home">
+        <div className="card-container">
+          <Card
+            period = "Agora"
+            cityName = "São Paulo"
+            weatherState = { hourly.comment }
+            maxTemp = { hourly.max }
+            rainPrec = { hourly.prprec }
+            rainProb = { hourly.prob }
+            icon = { hourly.dayIcon }
+          />
+          <Card
+            period = " Próximas 12h"
+            cityName = "São Paulo"
+            weatherState = { twelve.comment }
+            maxTemp = { twelve.max }
+            rainPrec = { twelve.prprec }
+            rainProb = { twelve.prob }
+            icon = { twelve.dayIcon }
+          />
+          <Card
+            period = "Amanhã"
+            cityName = "São Paulo"
+            weatherState = { nextDay.comment }
+            minTemp = { nextDay.min }
+            maxTemp = { nextDay.max }
+            rainPrec = { nextDay.prprec }
+            rainProb = { nextDay.prob }
+            icon = { nextDay.dayIcon }
+          />
+        </div>
+        <div>
+          <Timer
+            isReseted = { handleReset }
+            seconds = { seconds }
+            disabled = { false }
+          />
+        </div>
+        <div className="source">Source: <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
+        {error && 
+          showError()
+        }
       </div>
-      <div className="source">Source: <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
-      {error && 
-        showError()
-      }
-  </div>
+    </Fragment>
   )
 }
 

@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
 .home {
   display: flex;
   padding: 64px 16px;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .card-container {

@@ -8,6 +8,7 @@ const Timer = ({
   isReseted,
   seconds,
   disabled,
+  alert
 }) => {
   const [timeLeft, setTimeLeft] = useState(seconds);
   const [ buttonDisabled, setButtonDisabled ] = useState(false)
@@ -34,15 +35,17 @@ const Timer = ({
     }
 
     return () => clearInterval(interval)
-  }, [timeLeft, isReseted, handleTimer]);
+  }, [timeLeft, isReseted, handleTimer, alert]);
 
   const secondsToHms = (value) => {
     const h = Math.floor(value / 3600);
     const m = Math.floor(value % 3600 / 60);
     const s = Math.floor(value % 3600 % 60);
+    const mComma = m === 0 ? '' : ','
+    const sComma = s === 0 ? '' : ','
 
-    let hour = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-    let minute = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+    let hour = h > 0 ? h + (h === 1 ? ` hour${mComma} ` : ` hours${mComma} `) : "";
+    let minute = m > 0 ? m + (m === 1 ? ` minute${sComma} ` : ` minutes${sComma} `) : "";
     let second = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
     return hour + minute + second;
   }

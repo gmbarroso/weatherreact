@@ -15,13 +15,13 @@ const CardComponent = ({
     weatherState,
     period,
     icon
-}) => (
+}) => console.log(rainProb, rainPrec) || (
     <Card className="card-size">
       <Card.Body>
         <Card.Title>
           <div className="cardTitle">
             <span>{cityName}</span>
-            <span>{period}</span>
+            <span className="period">{period}</span>
           </div>
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{weatherState}</Card.Subtitle>
@@ -37,12 +37,12 @@ const CardComponent = ({
               <span className="min">{minTemp} ºC</span>
             }
           </div>
-          {rainPrec &&
+          {rainPrec !== 0 &&
             <div>
               {rainPrec} mm - {rainProb} %
             </div>
           }
-          {!rainPrec &&
+          {rainPrec === 0 &&
             <div>Sem previsão de chuva</div>
           }
         </Fragment>

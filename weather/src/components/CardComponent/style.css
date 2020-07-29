@@ -21,6 +21,7 @@ div {
 
 .min {
   font-size: 16px;
+  color:  #6c757d;
 }
 
 .cardTitle {
@@ -31,6 +32,11 @@ div {
 .weatherStatus {
   display: flex;
   justify-content: center;
+}
+
+.period {
+  font-size: 12px;
+  color:  #6c757d;
 }
 
 @media screen and (max-width: 1300px) {

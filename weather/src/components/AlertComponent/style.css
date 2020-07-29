@@ -1,0 +1,22 @@
+.alert {
+    display: flex;
+    justify-content: center;
+    -webkit-animation: fadeinout 8s linear forwards;
+    animation: fadeinout 8s linear forwards;
+    background-color: lightgreen;
+    border-radius: 16px;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    margin-top: 32px;
+}
+
+@-webkit-keyframes fadeinout {
+  0%,100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeinout {
+  0%,100% { opacity: 0; }
+  50% { opacity: 1; }
+}

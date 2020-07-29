@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Clock from '../../components/ClockComponent'
+import { Clock } from '../../components/'
 
 import {
   withRouter,

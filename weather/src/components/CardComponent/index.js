@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 // import { WiDaySunny } from "weather-icons-react";
 import { Card } from 'react-bootstrap';
-import WeatherIcon from '../WeatherIconComponent/index'
+import { WeatherIcon } from '../'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'

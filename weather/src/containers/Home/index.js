@@ -1,17 +1,23 @@
 import React, { useState, useEffect, Fragment } from 'react';
 
-import Card from '../../components/CardComponent'
-import Timer from '../../components/Timer'
-import Alert from '../../components/AlertComponent'
+import {
+  Card,
+  Timer,
+  Alert
+} from '../../components'
 
-import getHourly from '../../requests/getHourly'
-import getTwelve from '../../requests/getTwelve'
-import getNextDayWeather from '../../requests/getNextDayWeather'
-import getUserLocation from '../../requests/getUserLocation'
-import getDayWeather from '../../requests/getDayWeather'
+import {
+  getHourly,
+  getTwelve,
+  getNextDayWeather,
+  getUserLocation,
+  getDayWeather
+} from '../../requests'
 
-import useGeolocation from '../../hooks/useGeolocation'
-import useDarkTheme from '../../hooks/useDarkTheme'
+import {
+  useGeolocation,
+  useDarkTheme
+} from '../../hooks'
 
 import {
   withRouter,
@@ -114,7 +120,7 @@ const Home = () => {
                 getDayWeather(key)
                   .then(value => {
                     const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
-                    
+
                     setHourly({
                       comment: forecast.IconPhrase,
                       min: minimum,

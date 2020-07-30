@@ -23,11 +23,16 @@
   margin-bottom: 0;
 }
 
+.topContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 48px 0 48px;
+}
+
 .toggleDiv {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-right: 16px;
 }
 
 @media screen and (max-width: 768px) {
@@ -44,6 +49,13 @@
   .card-size {
     width: 300px;
     margin: 20px;
+  }
+
+  .topContainer {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    flex-direction: column;
   }
 
   .toggleDiv {

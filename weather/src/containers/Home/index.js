@@ -3,7 +3,8 @@ import React, { useState, useEffect, Fragment } from 'react';
 import {
   Card,
   Timer,
-  Alert
+  Alert,
+  Flags
 } from '../../components'
 
 import {
@@ -22,6 +23,7 @@ import {
 import {
   withRouter,
 } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
@@ -46,16 +48,18 @@ const Home = () => {
   const [ hourly, setHourly ] = useState(weatherObject)
   const [ twelve, setTwelve ] = useState(weatherObject)
   const [ nextDay, setNextDay ] = useState(weatherObject)
-  const [ seconds, setSeconds ] = useState(10800)
   const [ isChecked, setChecked ] = useState(false)
-  const [ showAlert, setShowAlert] = useState(false)
-  
+  const [ showAlert, setShowAlert ] = useState(false)  
   const showError = () => alert(error)
+  const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
 
+  const handleLanguage = lang => {
+    i18n.changeLanguage(lang)
+  }
+
   const handleReset = value => {
-    setShowAlert(true)
     if(value) {
       getUserLocation(latitude, longitude)
       .then(location => {
@@ -64,7 +68,6 @@ const Home = () => {
           getHourly(key)
             .then(value => {
               const forecast = value[0]
-              
               setHourly({
                 comment: forecast.IconPhrase,
                 max: forecast.Temperature.Value,
@@ -100,10 +103,14 @@ const Home = () => {
                 dayIcon: forecast.Day.Icon
               })
             })
+          setShowAlert(true)
+          setTimeout(() => {
+            setShowAlert(false)
+          }, 3000)
         }
       })
+      .catch(error => console.log(error))
     }
-    return true
   }
 
   const handleClick = () => setChecked(!isChecked)
@@ -164,16 +171,15 @@ const Home = () => {
   }, [hourly, latitude, longitude])
   return (
     <Fragment>
-      <Alert
-        showAlert = { showAlert }
-        message = "Informações de clima atualizados com sucesso"
-      />
-      <div className="toggleDiv">
-        <span>Mudar Tema:</span>
-        <label className="switch">
-          <input onChange={handleClick} checked={isChecked} type="checkbox" />
-          <span className="slider round"></span>
-        </label>
+      <div className="topContainer">
+        <div className="toggleDiv">
+          <span>{t('changeTheme')}</span>
+          <label className="switch">
+            <input onChange={handleClick} checked={isChecked} type="checkbox" />
+            <span className="slider round"></span>
+          </label>
+        </div>
+        <Flags language = { handleLanguage } />
       </div>
       <div className="home">
         <div className="card-container">
@@ -208,12 +214,15 @@ const Home = () => {
             icon = { nextDay.dayIcon }
           />
         </div>
+        <Alert
+          showAlert = { showAlert }
+          message = "Informações de clima atualizadas"
+        />
         <div>
           <Timer
             isReseted = { handleReset }
-            seconds = { seconds }
-            disabled = { false }
-            alert = { showAlert }
+            seconds = { 10800 }
+            buttonEnabled = { true }
           />
         </div>
         <div className="source">Source: <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>

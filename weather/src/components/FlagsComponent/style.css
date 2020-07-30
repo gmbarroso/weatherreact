@@ -1,0 +1,14 @@
+.flags {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+}
+
+.flag {
+    border-radius: 2px;
+    width: 24px;
+}
+
+.flag:hover {
+    cursor: pointer;
+}

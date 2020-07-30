@@ -6,16 +6,14 @@ import './style.css'
 const Alert = ({
     message,
     showAlert
-}) => {
-    return (
-        <Fragment>
-            {showAlert &&
-                <div className="alert alert-success" role="alert" >
-                    {message}
-                </div>
-            }
-        </Fragment>
-    )
-}
+}) => (
+    <Fragment>
+        {showAlert &&
+            <div id="snackbar" className="show">
+                { message }
+            </div>
+        }
+    </Fragment>
+)
 
 export default Alert

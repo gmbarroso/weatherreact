@@ -7,18 +7,19 @@ import './style.css'
 const Timer = ({
   isReseted,
   seconds,
-  disabled,
-  alert
+  buttonEnabled,
 }) => {
   const [timeLeft, setTimeLeft] = useState(seconds);
   const [ buttonDisabled, setButtonDisabled ] = useState(false)
 
   const handleTimer = useCallback(() => {
     setTimeLeft(seconds);
-    setButtonDisabled(isReseted)
-  }, [seconds, isReseted])
+    setButtonDisabled(!buttonDisabled)
+    isReseted(!buttonDisabled) // passando o valor para o pai
+  }, [seconds, isReseted, buttonDisabled])
 
   useEffect(() => {
+
     let interval = null
 
     if (timeLeft === 0) {
@@ -35,7 +36,7 @@ const Timer = ({
     }
 
     return () => clearInterval(interval)
-  }, [timeLeft, isReseted, handleTimer, alert]);
+  }, [timeLeft, isReseted, handleTimer]);
 
   const secondsToHms = (value) => {
     const h = Math.floor(value / 3600);
@@ -54,7 +55,7 @@ const Timer = ({
     <div className="timer">
       <h5>Atualiza em</h5>
       <h5>{secondsToHms(timeLeft)}</h5>
-      {!disabled &&
+      {buttonEnabled &&
       <div className="buttonTimer">
         <Button
             onClick = { () => handleTimer() }

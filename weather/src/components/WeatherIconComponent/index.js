@@ -126,10 +126,6 @@ const renderIcon = icon => {
       return <img className="icon" src={mostlyCloudyWithFlurriesNight} alt="icon"/>
     case 44:
       return <img className="icon" src={mostlyCloudyWithSnowNight} alt="icon"/>
-
-    // case 44:
-    //   return <img className="icon" src={sun} alt="icon"/>
-    // 
     default:
       return <span>No icon to show</span>
   }

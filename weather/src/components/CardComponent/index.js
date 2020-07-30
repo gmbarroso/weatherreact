@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-// import { WiDaySunny } from "weather-icons-react";
+
 import { Card } from 'react-bootstrap';
 import { WeatherIcon } from '../'
 
@@ -15,7 +15,7 @@ const CardComponent = ({
     weatherState,
     period,
     icon
-}) => console.log(rainProb, rainPrec) || (
+}) => (
     <Card className="card-size">
       <Card.Body>
         <Card.Title>

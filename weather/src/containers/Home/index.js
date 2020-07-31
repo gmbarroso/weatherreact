@@ -5,6 +5,7 @@ import {
   Timer,
   Alert,
   Flags,
+  LocationButtons
 } from '../../components'
 
 import {
@@ -12,7 +13,7 @@ import {
   getTwelve,
   getNextDayWeather,
   getUserLocation,
-  getDayWeather
+  getDayWeather,
 } from '../../requests'
 
 import {
@@ -52,8 +53,8 @@ const Home = props => {
   const [ nextDay, setNextDay ] = useState(weatherObject)
   const [ isChecked, setChecked ] = useState(false)
   const [ showAlert, setShowAlert ] = useState(false)  
-  const showLocationError = () => alert(locationError)
   const [ error, setError ] = useState(null)
+  const showLocationError = () => alert(locationError)
   const { t } = useTranslation('common')
   
   useDarkTheme(isChecked)
@@ -199,6 +200,7 @@ const Home = props => {
             <span className="slider round"></span>
           </label>
         </div>
+        <LocationButtons />
         <Flags language = { props.lang } />
       </div>
       <div className="home">

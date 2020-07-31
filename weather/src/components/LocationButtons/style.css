@@ -1,0 +1,13 @@
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 400px;
+    margin: 0;
+}
+
+/* @media screen and (max-width: 768px) {
+    .buttons {
+        flex-direction: column;
+    }
+} */

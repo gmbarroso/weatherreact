@@ -5,6 +5,7 @@ import Timer from './Timer'
 import WeatherIcon from './WeatherIconComponent'
 import Flags from './FlagsComponent'
 import Error from './ErrorComponent'
+import LocationButtons from './LocationButtons'
 
 export {
     Alert,
@@ -13,5 +14,6 @@ export {
     Timer,
     WeatherIcon,
     Flags,
-    Error
+    Error,
+    LocationButtons
 }

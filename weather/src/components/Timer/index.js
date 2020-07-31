@@ -61,6 +61,7 @@ const Timer = ({
             onClick = { () => handleTimer() }
             variant="primary"
             disabled = { buttonDisabled }
+            size = "sm"
           >
             {t('timer.button')}
         </Button>

@@ -55,6 +55,7 @@
   .topContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 0;
     flex-direction: column;
   }
@@ -63,5 +64,6 @@
     display: flex;
     justify-content: center;
     margin-right: 0;
+    margin-bottom: 16px;
   }
 }

@@ -1,12 +1,12 @@
 import {
   token,
-  br,
+  translate,
   details,
   metric,
 } from './parameters'
 
-const forecast = async location=> {
-  const result = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${token}&language=${br}&details=${details}&metric=${metric}`)
+const forecast = async (location, lang)=> {
+  const result = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${location}?apikey=${token}&language=${translate(lang)}&details=${details}&metric=${metric}`)
   return result.json()
 }
 

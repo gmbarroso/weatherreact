@@ -5,7 +5,7 @@ import {
   Timer,
   Alert,
   Flags,
-  LocationButtons
+  // LocationButtons
 } from '../../components'
 
 import {
@@ -55,7 +55,7 @@ const Home = props => {
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
   const showLocationError = () => alert(locationError)
-  const { t } = useTranslation('common')
+  const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
 
@@ -66,10 +66,10 @@ const Home = props => {
         console.log(location)
         if(location) {
           const key = location.Key
-          getHourly(key)
+          getHourly(key, i18n.language)
           .then(value => {
             const forecast = value[0]
-            getDayWeather(key)
+            getDayWeather(key, i18n.language)
               .then(value => {
                 const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
 
@@ -86,7 +86,7 @@ const Home = props => {
             })
           })
 
-          getTwelve(key)
+          getTwelve(key, i18n.language)
             .then(value => {
               const forecast = value[11]
 
@@ -101,7 +101,7 @@ const Home = props => {
               })
             })
           
-          getNextDayWeather(key)
+          getNextDayWeather(key, i18n.language)
             .then(value => {
               const forecast = value.DailyForecasts[1]
               
@@ -134,10 +134,10 @@ const Home = props => {
         .then(location => {
           if(location) {
             const key = location.Key
-            getHourly(key)
+            getHourly(key, i18n.language)
               .then(value => {
                 const forecast = value[0]
-                getDayWeather(key)
+                getDayWeather(key, i18n.language)
                   .then(value => {
                     const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
 
@@ -154,7 +154,7 @@ const Home = props => {
                 })
               })
 
-            getTwelve(key)
+            getTwelve(key, i18n.language)
               .then(value => {
                 const forecast = value[11]
                 
@@ -169,7 +169,7 @@ const Home = props => {
                 })
               })
 
-            getNextDayWeather(key)
+            getNextDayWeather(key, i18n.language)
               .then(value => {
                 const forecast = value.DailyForecasts[1]
 
@@ -200,7 +200,7 @@ const Home = props => {
             <span className="slider round"></span>
           </label>
         </div>
-        <LocationButtons />
+        {/* <LocationButtons /> */}
         <Flags language = { props.lang } />
       </div>
       <div className="home">

@@ -22,7 +22,8 @@
             "oct": "Oct",
             "nov": "Nov",
             "dec": "Dic"
-        }
+        },
+        "madeBy": "Hecho por: "
     },
     "home": {
         "changeTheme": "Cambiar de tema:",

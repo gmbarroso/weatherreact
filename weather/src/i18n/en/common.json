@@ -22,7 +22,8 @@
             "oct": "Oct",
             "nov": "Nov",
             "dec": "Dec"
-        }
+        },
+        "madeBy": "Made By: "
     },
     "home": {
         "changeTheme": "Change theme:",

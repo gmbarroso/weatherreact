@@ -5,29 +5,29 @@ const useGeolocation = (options ={}) => {
   // const [location, setLocation] = useState()
   const [ latitude, setLatitude ] = useState()
   const [ longitude, setLongitude ] = useState()
-
+  
   const handleSuccess = position => {
     const { latitude, longitude } = position.coords
-
+    
     // setLocation({
-    //   latitude,
-    //   longitude
-    // })
-    setLatitude(latitude)
-    setLongitude(longitude)
-  }
-
-  const handleError = error => {
-    setError(error.message)
-  }
-
-  useEffect(() => {
-    if(!navigator.geolocation) {
-      setError('Location not found')
-
-      return
+      //   latitude,
+      //   longitude
+      // })
+      setLatitude(latitude)
+      setLongitude(longitude)
     }
-
+    
+    const handleError = error => {
+      setError(error.message)
+    }
+    
+    useEffect(() => {
+      if(!navigator.geolocation) {
+        setError('Location not found')
+        
+        return
+      }
+      
     navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
   }, [options])
 

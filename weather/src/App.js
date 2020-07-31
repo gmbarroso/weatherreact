@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom'
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { br, en, es } from './i18n'
-
 import Root from './pages/Root'
 
 i18n

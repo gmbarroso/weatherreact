@@ -1,3 +1,43 @@
 {
-    "changeTheme": "Change theme:"
+    "header": {
+        "weekDays": {
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat",
+            "sun": "Sun"
+        },
+        "months": {
+            "jan": "Jan",
+            "feb": "Feb",
+            "mar": "Mar",
+            "apr": "Apr",
+            "may": "May",
+            "jun": "Jun",
+            "jul": "Jul",
+            "aug": "Aug",
+            "sep": "Sep",
+            "oct": "Oct",
+            "nov": "Nov",
+            "dec": "Dec"
+        }
+    },
+    "home": {
+        "changeTheme": "Change theme:",
+        "source": "Source: "
+    },
+    "cards": {
+        "now": "Now",
+        "nextTwelve": "Next 12h",
+        "tomorrow": "Tomorrow",
+        "noRain": "No rain forecast"
+    },
+    "timer": {
+        "title": "Updates in",
+        "button": "Update now",
+        "hour": "h ",
+        "minutes": "m "
+    }
 }

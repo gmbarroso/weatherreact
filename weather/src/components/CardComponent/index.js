@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Card } from 'react-bootstrap';
 import { WeatherIcon } from '../'
@@ -15,7 +16,10 @@ const CardComponent = ({
     weatherState,
     period,
     icon
-}) => (
+}) => {
+  const { t } = useTranslation('common')
+
+  return (
     <Card className="card-size">
       <Card.Body>
         <Card.Title>
@@ -43,11 +47,12 @@ const CardComponent = ({
             </div>
           }
           {rainPrec === 0 &&
-            <div>Sem previsão de chuva</div>
+            <div>{t('cards.noRain')}</div>
           }
         </Fragment>
       </Card.Body>
     </Card>
-)
+  )
+}
 
 export default CardComponent

@@ -23,7 +23,8 @@ import {
 import {
   withRouter,
 } from 'react-router-dom'
-import { useTranslation } from "react-i18next";
+
+import { useTranslation } from 'react-i18next';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
@@ -43,7 +44,7 @@ const geoLocationOptions = {
   timeout: 1000 * 60 * 1 // 1 minute
 }
 
-const Home = () => {
+const Home = props => {
   const { latitude, longitude, error } = useGeolocation(geoLocationOptions)
   const [ hourly, setHourly ] = useState(weatherObject)
   const [ twelve, setTwelve ] = useState(weatherObject)
@@ -51,13 +52,9 @@ const Home = () => {
   const [ isChecked, setChecked ] = useState(false)
   const [ showAlert, setShowAlert ] = useState(false)  
   const showError = () => alert(error)
-  const { t, i18n } = useTranslation('common')
+  const { t } = useTranslation('common')
   
   useDarkTheme(isChecked)
-
-  const handleLanguage = lang => {
-    i18n.changeLanguage(lang)
-  }
 
   const handleReset = value => {
     if(value) {
@@ -173,18 +170,18 @@ const Home = () => {
     <Fragment>
       <div className="topContainer">
         <div className="toggleDiv">
-          <span>{t('changeTheme')}</span>
+          <span>{t('home.changeTheme')}</span>
           <label className="switch">
             <input onChange={handleClick} checked={isChecked} type="checkbox" />
             <span className="slider round"></span>
           </label>
         </div>
-        <Flags language = { handleLanguage } />
+        <Flags language = { props.lang } />
       </div>
       <div className="home">
         <div className="card-container">
           <Card
-            period = "Agora"
+            period = { t('cards.now') }
             cityName = "São Paulo"
             weatherState = { hourly.comment }
             minTemp = { hourly.min }
@@ -194,7 +191,7 @@ const Home = () => {
             icon = { hourly.dayIcon }
           />
           <Card
-            period = " Próximas 12h"
+            period = { t('cards.nextTwelve') }
             cityName = "São Paulo"
             weatherState = { twelve.comment }
             minTemp = { nextDay.min }
@@ -204,7 +201,7 @@ const Home = () => {
             icon = { twelve.dayIcon }
           />
           <Card
-            period = "Amanhã"
+            period = { t('cards.tomorrow') }
             cityName = "São Paulo"
             weatherState = { nextDay.comment }
             minTemp = { nextDay.min }
@@ -225,7 +222,7 @@ const Home = () => {
             buttonEnabled = { true }
           />
         </div>
-        <div className="source">Source: <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
+        <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
         {error && 
           showError()
         }

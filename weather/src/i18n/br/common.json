@@ -1,3 +1,43 @@
 {
-    "changeTheme": "Mudar tema:"
+    "header": {
+        "weekDays": {
+            "mon": "Seg",
+            "tue": "Ter",
+            "wed": "Qua",
+            "thu": "Qui",
+            "fri": "Sex",
+            "sat": "Sáb",
+            "sun": "Dom"
+        },
+        "months": {
+            "jan": "Jan",
+            "feb": "Fev",
+            "mar": "Mar",
+            "apr": "Abr",
+            "may": "Mai",
+            "jun": "Jun",
+            "jul": "Jul",
+            "aug": "Ago",
+            "sep": "Set",
+            "oct": "Out",
+            "nov": "Nov",
+            "dec": "Dez"
+        }
+    },
+    "home": {
+        "changeTheme": "Mudar tema:",
+        "source": "Fonte: "
+    },
+    "cards": {
+        "now": "Agora",
+        "nextTwelve": "Próximas 12h",
+        "tomorrow": "Amanhã",
+        "noRain": "Sem previsão de chuva"
+    },
+    "timer": {
+        "title": "Atualiza em",
+        "button": "Atualizar agora",
+        "hour": "h ",
+        "minutes": "m "
+    }
 }

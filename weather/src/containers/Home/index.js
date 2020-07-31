@@ -4,7 +4,7 @@ import {
   Card,
   Timer,
   Alert,
-  Flags
+  Flags,
 } from '../../components'
 
 import {
@@ -32,6 +32,7 @@ import './toggleButtonStyle.css'
 
 const weatherObject = {
   cityName: null,
+  neighborhood: null,
   comment: null,
   max: null,
   min: null,
@@ -45,13 +46,14 @@ const geoLocationOptions = {
 }
 
 const Home = props => {
-  const { latitude, longitude, error } = useGeolocation(geoLocationOptions)
+  const { latitude, longitude, locationError } = useGeolocation(geoLocationOptions)
   const [ hourly, setHourly ] = useState(weatherObject)
   const [ twelve, setTwelve ] = useState(weatherObject)
   const [ nextDay, setNextDay ] = useState(weatherObject)
   const [ isChecked, setChecked ] = useState(false)
   const [ showAlert, setShowAlert ] = useState(false)  
-  const showError = () => alert(error)
+  const showLocationError = () => alert(locationError)
+  const [ error, setError ] = useState(null)
   const { t } = useTranslation('common')
   
   useDarkTheme(isChecked)
@@ -60,25 +62,36 @@ const Home = props => {
     if(value) {
       getUserLocation(latitude, longitude)
       .then(location => {
+        console.log(location)
         if(location) {
           const key = location.Key
           getHourly(key)
-            .then(value => {
-              const forecast = value[0]
-              setHourly({
-                comment: forecast.IconPhrase,
-                max: forecast.Temperature.Value,
-                prec: forecast.Rain.Value,
-                prob: forecast.PrecipitationProbability,
-                dayIcon: forecast.WeatherIcon
-              })
+          .then(value => {
+            const forecast = value[0]
+            getDayWeather(key)
+              .then(value => {
+                const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
+
+                setHourly({
+                  cityName: location.ParentCity.EnglishName,
+                  neighborhood: location.LocalizedName,
+                  comment: forecast.IconPhrase,
+                  min: minimum,
+                  max: forecast.Temperature.Value,
+                  prec: forecast.Rain.Value,
+                  prob: forecast.PrecipitationProbability,
+                  dayIcon: forecast.WeatherIcon
+                })
             })
+          })
 
           getTwelve(key)
             .then(value => {
               const forecast = value[11]
 
               setTwelve({
+                cityName: location.ParentCity.EnglishName,
+                neighborhood: location.LocalizedName,
                 comment: forecast.IconPhrase,
                 max: forecast.Temperature.Value,
                 prec: forecast.Rain.Value,
@@ -92,6 +105,8 @@ const Home = props => {
               const forecast = value.DailyForecasts[1]
               
               setNextDay({
+                cityName: location.ParentCity.EnglishName,
+                neighborhood: location.LocalizedName,
                 comment: forecast.Day.IconPhrase,
                 max: forecast.Temperature.Maximum.Value,
                 min: forecast.Temperature.Minimum.Value,
@@ -106,7 +121,7 @@ const Home = props => {
           }, 3000)
         }
       })
-      .catch(error => console.log(error))
+      .catch(errorMessage => errorMessage ? setError(true) : setError(false))
     }
   }
 
@@ -126,6 +141,8 @@ const Home = props => {
                     const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
 
                     setHourly({
+                      cityName: location.ParentCity.EnglishName,
+                      neighborhood: location.LocalizedName,
                       comment: forecast.IconPhrase,
                       min: minimum,
                       max: forecast.Temperature.Value,
@@ -141,6 +158,8 @@ const Home = props => {
                 const forecast = value[11]
                 
                 setTwelve({
+                  cityName: location.ParentCity.EnglishName,
+                  neighborhood: location.LocalizedName,
                   comment: forecast.IconPhrase,
                   max: forecast.Temperature.Value,
                   prec: forecast.Rain.Value,
@@ -154,6 +173,8 @@ const Home = props => {
                 const forecast = value.DailyForecasts[1]
 
                 setNextDay({
+                  cityName: location.ParentCity.EnglishName,
+                  neighborhood: location.LocalizedName,
                   comment: forecast.Day.IconPhrase,
                   max: forecast.Temperature.Maximum.Value,
                   min: forecast.Temperature.Minimum.Value,
@@ -164,6 +185,8 @@ const Home = props => {
               })
           }
         })
+        .catch(errorMessage => errorMessage ? setError(true) : setError(false))
+
     }
   }, [hourly, latitude, longitude])
   return (
@@ -182,38 +205,44 @@ const Home = props => {
         <div className="card-container">
           <Card
             period = { t('cards.now') }
-            cityName = "São Paulo"
+            cityName = { hourly.cityName }
+            neighborhood = { hourly.neighborhood }
             weatherState = { hourly.comment }
             minTemp = { hourly.min }
             maxTemp = { hourly.max }
             rainPrec = { hourly.prec }
             rainProb = { hourly.prob }
             icon = { hourly.dayIcon }
+            error = { error }
           />
           <Card
             period = { t('cards.nextTwelve') }
-            cityName = "São Paulo"
+            cityName = { twelve.cityName }
+            neighborhood = { hourly.neighborhood }
             weatherState = { twelve.comment }
             minTemp = { nextDay.min }
             maxTemp = { twelve.max }
             rainPrec = { twelve.prec }
             rainProb = { twelve.prob }
             icon = { twelve.dayIcon }
+            error = { error }
           />
           <Card
             period = { t('cards.tomorrow') }
-            cityName = "São Paulo"
+            cityName = { nextDay.cityName }
+            neighborhood = { hourly.neighborhood }
             weatherState = { nextDay.comment }
             minTemp = { nextDay.min }
             maxTemp = { nextDay.max }
             rainPrec = { nextDay.prec }
             rainProb = { nextDay.prob }
             icon = { nextDay.dayIcon }
+            error = { error }
           />
         </div>
         <Alert
           showAlert = { showAlert }
-          message = "Informações de clima atualizadas"
+          message = {t('home.alert')}
         />
         <div>
           <Timer
@@ -223,8 +252,8 @@ const Home = props => {
           />
         </div>
         <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
-        {error && 
-          showError()
+        {locationError && 
+          showLocationError()
         }
       </div>
     </Fragment>

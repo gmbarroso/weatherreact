@@ -39,6 +39,10 @@ div {
   color:  #6c757d;
 }
 
+.weatherState {
+  color: #6c757d;
+}
+
 @media screen and (max-width: 1300px) {
   .card-size {
     width: 300px;

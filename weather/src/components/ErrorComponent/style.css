@@ -1,0 +1,13 @@
+.errorDiv {
+    display: flex;
+    align-items: center;
+    margin: 50px;
+}
+
+.errorIcon {
+    width: 64px;
+}
+
+.errorMessage {
+    text-align: center;
+}

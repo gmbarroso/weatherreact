@@ -1,0 +1,13 @@
+
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    margin: 0;
+}
+
+.text-primary {
+    margin: 0;
+    color: #e96913 !important;
+}

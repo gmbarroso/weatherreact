@@ -5,7 +5,8 @@ import {
   Timer,
   Alert,
   Flags,
-  // LocationButtons
+  // LocationButtons,
+  // Loader
 } from '../../components'
 
 import {
@@ -54,6 +55,7 @@ const Home = props => {
   const [ isChecked, setChecked ] = useState(false)
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
+  // const [ loader, setLoader ] = useState(false)
   const showLocationError = () => alert(locationError)
   const { t, i18n } = useTranslation('common')
   
@@ -186,7 +188,6 @@ const Home = props => {
           }
         })
         .catch(errorMessage => errorMessage ? setError(true) : setError(false))
-
     }
   }, [hourly, latitude, longitude, i18n])
   return (

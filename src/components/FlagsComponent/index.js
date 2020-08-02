@@ -4,8 +4,6 @@ import br from '../../img/flags/br.svg'
 import us from '../../img/flags/us.svg'
 import es from '../../img/flags/es.svg'
 
-import { translate } from '../../requests/parameters'
-
 import './style.css'
 
 const FlagComponent = ({ language }) => {
@@ -19,7 +17,6 @@ const FlagComponent = ({ language }) => {
     const handleUs = () => {
         setLang('en')
         language('en')
-        translate('en')
     }
 
     const handleEs = () => {

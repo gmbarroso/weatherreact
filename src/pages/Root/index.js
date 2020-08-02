@@ -9,7 +9,7 @@ import {
 
 import {
   Route,
-  Switch,
+  // Switch,
   HashRouter,
   withRouter,
 } from 'react-router-dom'

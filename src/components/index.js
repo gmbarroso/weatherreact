@@ -6,6 +6,7 @@ import WeatherIcon from './WeatherIconComponent'
 import Flags from './FlagsComponent'
 import Error from './ErrorComponent'
 import LocationButtons from './LocationButtons'
+import Loader from './Loader'
 
 export {
     Alert,
@@ -15,5 +16,6 @@ export {
     WeatherIcon,
     Flags,
     Error,
-    LocationButtons
+    LocationButtons,
+    Loader
 }

@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a6bf109d9d834384720f0f1a2c740e32",
+    "revision": "0f81dffbd6ac70bf10ff6d9ab97abe91",
     "url": "/weatherreact/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/weatherreact/static/css/2.af3c1da9.chunk.css"
   },
   {
-    "revision": "a2410a40f3c9c9c36a1f",
+    "revision": "2de1f695d56a439a283f",
     "url": "/weatherreact/static/css/main.146e3cc3.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/weatherreact/static/js/2.77047fca.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a2410a40f3c9c9c36a1f",
-    "url": "/weatherreact/static/js/main.c2f63a57.chunk.js"
+    "revision": "2de1f695d56a439a283f",
+    "url": "/weatherreact/static/js/main.9a168f9b.chunk.js"
   },
   {
     "revision": "daab2c413398db54295c",

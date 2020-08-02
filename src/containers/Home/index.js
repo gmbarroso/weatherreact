@@ -59,11 +59,10 @@ const Home = props => {
   
   useDarkTheme(isChecked)
 
-  const handleReset = value => {
+  const handleReset = (value) => {
     if(value) {
       getUserLocation(latitude, longitude)
       .then(location => {
-        console.log(location)
         if(location) {
           const key = location.Key
           getHourly(key, i18n.language)
@@ -189,7 +188,7 @@ const Home = props => {
         .catch(errorMessage => errorMessage ? setError(true) : setError(false))
 
     }
-  }, [hourly, latitude, longitude])
+  }, [hourly, latitude, longitude, i18n])
   return (
     <Fragment>
       <div className="topContainer">

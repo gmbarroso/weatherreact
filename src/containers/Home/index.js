@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 
 import {
   Card,
@@ -6,7 +6,7 @@ import {
   Alert,
   Flags,
   // LocationButtons,
-  // Loader
+  Loader
 } from '../../components'
 
 import {
@@ -55,83 +55,14 @@ const Home = props => {
   const [ isChecked, setChecked ] = useState(false)
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
-  // const [ loader, setLoader ] = useState(false)
+  const [ loader, setLoader ] = useState(true)
   const showLocationError = () => alert(locationError)
   const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
 
-  const handleReset = (value) => {
-    if(value) {
-      getUserLocation(latitude, longitude)
-      .then(location => {
-        if(location) {
-          const key = location.Key
-          getHourly(key, i18n.language)
-          .then(value => {
-            const forecast = value[0]
-            getDayWeather(key, i18n.language)
-              .then(value => {
-                const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
-
-                setHourly({
-                  cityName: location.ParentCity.EnglishName,
-                  neighborhood: location.LocalizedName,
-                  comment: forecast.IconPhrase,
-                  min: minimum,
-                  max: forecast.Temperature.Value,
-                  prec: forecast.Rain.Value,
-                  prob: forecast.PrecipitationProbability,
-                  dayIcon: forecast.WeatherIcon
-                })
-            })
-          })
-
-          getTwelve(key, i18n.language)
-            .then(value => {
-              const forecast = value[11]
-
-              setTwelve({
-                cityName: location.ParentCity.EnglishName,
-                neighborhood: location.LocalizedName,
-                comment: forecast.IconPhrase,
-                max: forecast.Temperature.Value,
-                prec: forecast.Rain.Value,
-                prob: forecast.PrecipitationProbability,
-                dayIcon: forecast.WeatherIcon
-              })
-            })
-          
-          getNextDayWeather(key, i18n.language)
-            .then(value => {
-              const forecast = value.DailyForecasts[1]
-              
-              setNextDay({
-                cityName: location.ParentCity.EnglishName,
-                neighborhood: location.LocalizedName,
-                comment: forecast.Day.IconPhrase,
-                max: forecast.Temperature.Maximum.Value,
-                min: forecast.Temperature.Minimum.Value,
-                prec: forecast.Day.Rain.Value,
-                prob: forecast.Day.PrecipitationProbability,
-                dayIcon: forecast.Day.Icon
-              })
-            })
-          setShowAlert(true)
-          setTimeout(() => {
-            setShowAlert(false)
-          }, 3000)
-        }
-      })
-      .catch(errorMessage => errorMessage ? setError(true) : setError(false))
-    }
-  }
-
-  const handleClick = () => setChecked(!isChecked)
-
-  useEffect(() => {
-    if (hourly.comment === null) {
-      getUserLocation(latitude, longitude)
+  const getData = useCallback(() => {
+    getUserLocation(latitude, longitude)
         .then(location => {
           if(location) {
             const key = location.Key
@@ -188,8 +119,28 @@ const Home = props => {
           }
         })
         .catch(errorMessage => errorMessage ? setError(true) : setError(false))
+  }, [i18n, latitude, longitude])
+
+  const handleReset = (value) => {
+    if(value) {
+      getData()
+      setLoader(false)
+      setShowAlert(true)
     }
-  }, [hourly, latitude, longitude, i18n])
+    setTimeout(()=> {
+      setShowAlert(false)
+    }, 3000)
+  }
+
+  const handleClick = () => setChecked(!isChecked)
+
+  useEffect(() => {
+    if (hourly.comment === null) {
+      getData()
+      setLoader(false)
+    }
+  }, [hourly, latitude, longitude, i18n, getData])
+
   return (
     <Fragment>
       <div className="topContainer">
@@ -204,56 +155,63 @@ const Home = props => {
         <Flags language = { props.lang } />
       </div>
       <div className="home">
-        <div className="card-container">
-          <Card
-            period = { t('cards.now') }
-            cityName = { hourly.cityName }
-            neighborhood = { hourly.neighborhood }
-            weatherState = { hourly.comment }
-            minTemp = { hourly.min }
-            maxTemp = { hourly.max }
-            rainPrec = { hourly.prec }
-            rainProb = { hourly.prob }
-            icon = { hourly.dayIcon }
-            error = { error }
-          />
-          <Card
-            period = { t('cards.nextTwelve') }
-            cityName = { twelve.cityName }
-            neighborhood = { hourly.neighborhood }
-            weatherState = { twelve.comment }
-            minTemp = { nextDay.min }
-            maxTemp = { twelve.max }
-            rainPrec = { twelve.prec }
-            rainProb = { twelve.prob }
-            icon = { twelve.dayIcon }
-            error = { error }
-          />
-          <Card
-            period = { t('cards.tomorrow') }
-            cityName = { nextDay.cityName }
-            neighborhood = { hourly.neighborhood }
-            weatherState = { nextDay.comment }
-            minTemp = { nextDay.min }
-            maxTemp = { nextDay.max }
-            rainPrec = { nextDay.prec }
-            rainProb = { nextDay.prob }
-            icon = { nextDay.dayIcon }
-            error = { error }
-          />
-        </div>
-        <Alert
-          showAlert = { showAlert }
-          message = {t('home.alert')}
-        />
-        <div>
-          <Timer
-            isReseted = { handleReset }
-            seconds = { 10800 }
-            buttonEnabled = { true }
-          />
-        </div>
-        <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
+        {loader &&
+          <Loader />
+        }
+        {!loader &&
+          <Fragment>
+            <div className="card-container">
+              <Card
+                period = { t('cards.now') }
+                cityName = { hourly.cityName }
+                neighborhood = { hourly.neighborhood }
+                weatherState = { hourly.comment }
+                minTemp = { hourly.min }
+                maxTemp = { hourly.max }
+                rainPrec = { hourly.prec }
+                rainProb = { hourly.prob }
+                icon = { hourly.dayIcon }
+                error = { error }
+              />
+              <Card
+                period = { t('cards.nextTwelve') }
+                cityName = { twelve.cityName }
+                neighborhood = { hourly.neighborhood }
+                weatherState = { twelve.comment }
+                minTemp = { nextDay.min }
+                maxTemp = { twelve.max }
+                rainPrec = { twelve.prec }
+                rainProb = { twelve.prob }
+                icon = { twelve.dayIcon }
+                error = { error }
+              />
+              <Card
+                period = { t('cards.tomorrow') }
+                cityName = { nextDay.cityName }
+                neighborhood = { hourly.neighborhood }
+                weatherState = { nextDay.comment }
+                minTemp = { nextDay.min }
+                maxTemp = { nextDay.max }
+                rainPrec = { nextDay.prec }
+                rainProb = { nextDay.prob }
+                icon = { nextDay.dayIcon }
+                error = { error }
+              />
+            </div>
+            <Alert
+              showAlert = { showAlert }
+              message = {t('home.alert')}
+            />
+            <div>
+              <Timer
+                isReseted = { handleReset }
+                seconds = { 10800 }
+                buttonEnabled = { true }
+              />
+            </div>
+            <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
+          </Fragment>
+        }
         {locationError && 
           showLocationError()
         }

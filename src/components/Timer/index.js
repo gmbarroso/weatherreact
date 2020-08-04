@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from '../../hooks/'
 
@@ -11,18 +11,17 @@ const Timer = ({
   seconds,
   buttonEnabled,
 }) => {
-  const [timeLeft, setTimeLeft] = useState(seconds);
-  const [ buttonDisabled, setButtonDisabled ] = useLocalStorage(false)
+  const [timeLeft, setTimeLeft] = useLocalStorage('timeLeft', seconds);
+  const [ buttonDisabled, setButtonDisabled ] = useLocalStorage('buttonEnabled', false)
   const { t } = useTranslation('common')
 
   const handleTimer = useCallback(() => {
     setTimeLeft(seconds);
     setButtonDisabled(!buttonDisabled)
     isReseted(!buttonDisabled) // passando o valor para o pai
-  }, [seconds, isReseted, buttonDisabled, setButtonDisabled])
+  }, [seconds, isReseted, buttonDisabled, setButtonDisabled, setTimeLeft])
 
   useEffect(() => {
-
     let interval = null
 
     if (timeLeft === 0) {
@@ -39,7 +38,7 @@ const Timer = ({
     }
 
     return () => clearInterval(interval)
-  }, [timeLeft, isReseted, handleTimer, setButtonDisabled]);
+  }, [timeLeft, isReseted, handleTimer, setButtonDisabled, setTimeLeft]);
 
   const secondsToHms = (value) => {
     const h = Math.floor(value / 3600);

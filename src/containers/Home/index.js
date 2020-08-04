@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 
 import {
   Card,
@@ -61,7 +61,7 @@ const Home = props => {
   
   useDarkTheme(isChecked)
 
-  const getData = () => {
+  const getData = useCallback(() => {
     getUserLocation(latitude, longitude)
         .then(location => {
           if(location) {
@@ -119,13 +119,17 @@ const Home = props => {
           }
         })
         .catch(errorMessage => errorMessage ? setError(true) : setError(false))
-  }
+  }, [i18n, latitude, longitude])
 
   const handleReset = (value) => {
     if(value) {
       getData()
       setLoader(false)
+      setShowAlert(true)
     }
+    setTimeout(()=> {
+      setShowAlert(false)
+    }, 3000)
   }
 
   const handleClick = () => setChecked(!isChecked)
@@ -135,7 +139,7 @@ const Home = props => {
       getData()
       setLoader(false)
     }
-  }, [hourly, latitude, longitude, i18n])
+  }, [hourly, latitude, longitude, i18n, getData])
 
   return (
     <Fragment>

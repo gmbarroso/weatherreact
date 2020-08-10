@@ -1,8 +1,9 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, Fragment } from "react";
 import { useTranslation } from 'react-i18next';
 import { useLocalStorage } from '../../hooks/'
 
 import { Button } from 'react-bootstrap';
+import { Loader } from '../'
 
 import './style.css'
 
@@ -10,6 +11,7 @@ const Timer = ({
   isReseted,
   seconds,
   buttonEnabled,
+  loader
 }) => {
   const [timeLeft, setTimeLeft] = useLocalStorage('timeLeft', seconds);
   const [ buttonDisabled, setButtonDisabled ] = useLocalStorage('buttonEnabled', false)
@@ -20,6 +22,31 @@ const Timer = ({
     setButtonDisabled(!buttonDisabled)
     isReseted(!buttonDisabled) // passando o valor para o pai
   }, [seconds, isReseted, buttonDisabled, setButtonDisabled, setTimeLeft])
+
+  const renderTimer = () => {
+    if(!loader) {
+      return (
+        <Fragment>
+          <h5>{t('timer.title')}</h5>
+          <h5>{secondsToHms(timeLeft)}</h5>
+          {buttonEnabled &&
+          <div className="buttonTimer">
+            <Button
+                onClick = { () => handleTimer() }
+                variant="primary"
+                disabled = { buttonDisabled }
+                size = "sm"
+              >
+                {t('timer.button')}
+            </Button>
+          </div>
+          }
+        </Fragment>
+      )
+    } else {
+      return <Loader />
+    }
+  }
 
   useEffect(() => {
     let interval = null
@@ -53,20 +80,7 @@ const Timer = ({
 
   return (
     <div className="timer">
-      <h5>{t('timer.title')}</h5>
-      <h5>{secondsToHms(timeLeft)}</h5>
-      {buttonEnabled &&
-      <div className="buttonTimer">
-        <Button
-            onClick = { () => handleTimer() }
-            variant="primary"
-            disabled = { buttonDisabled }
-            size = "sm"
-          >
-            {t('timer.button')}
-        </Button>
-      </div>
-      }
+      {renderTimer()}
     </div>
   );
 };

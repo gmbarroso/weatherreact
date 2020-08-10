@@ -5,7 +5,7 @@ import {
   Timer,
   Alert,
   Flags,
-  // LocationButtons,
+  LocationButtons,
   Loader
 } from '../../components'
 
@@ -15,6 +15,7 @@ import {
   getNextDayWeather,
   getUserLocation,
   getDayWeather,
+  getCitiesList
 } from '../../requests'
 
 import {
@@ -56,6 +57,7 @@ const Home = props => {
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
   const [ loader, setLoader ] = useState(true)
+  const [ cities, setCities ] = useState([])
   const showLocationError = () => alert(locationError)
   const { t, i18n } = useTranslation('common')
   
@@ -134,7 +136,15 @@ const Home = props => {
 
   const handleClick = () => setChecked(!isChecked)
 
+  const getCities = () => {
+    getCitiesList()
+    .then(value => setCities(value))
+
+    return cities
+  }
+
   useEffect(() => {
+    getCities()
     if (hourly.comment === null) {
       getData()
       setLoader(false)
@@ -151,7 +161,7 @@ const Home = props => {
             <span className="slider round"></span>
           </label>
         </div>
-        {/* <LocationButtons /> */}
+        {/* <LocationButtons list = { cities } /> */}
         <Flags language = { props.lang } />
       </div>
       <div className="home">

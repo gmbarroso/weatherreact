@@ -1,9 +1,14 @@
 .buttons {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 400px;
+    /* align-items: center; */
+    /* justify-content: space-between; */
+    /* width: 400px; */
     margin: 0;
+}
+
+.form-group {
+    margin: 0;
+    width: 200px;
 }
 
 /* @media screen and (max-width: 768px) {

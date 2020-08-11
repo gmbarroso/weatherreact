@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/weatherreact/static/css/main.68e3e929.chunk.css",
-    "main.js": "/weatherreact/static/js/main.f301d257.chunk.js",
-    "main.js.map": "/weatherreact/static/js/main.f301d257.chunk.js.map",
+    "main.css": "/weatherreact/static/css/main.21b10b9d.chunk.css",
+    "main.js": "/weatherreact/static/js/main.cae9574d.chunk.js",
+    "main.js.map": "/weatherreact/static/js/main.cae9574d.chunk.js.map",
     "runtime-main.js": "/weatherreact/static/js/runtime-main.ed187f85.js",
     "runtime-main.js.map": "/weatherreact/static/js/runtime-main.ed187f85.js.map",
     "static/css/2.af3c1da9.chunk.css": "/weatherreact/static/css/2.af3c1da9.chunk.css",
-    "static/js/2.5184c740.chunk.js": "/weatherreact/static/js/2.5184c740.chunk.js",
-    "static/js/2.5184c740.chunk.js.map": "/weatherreact/static/js/2.5184c740.chunk.js.map",
+    "static/js/2.c255bdb0.chunk.js": "/weatherreact/static/js/2.c255bdb0.chunk.js",
+    "static/js/2.c255bdb0.chunk.js.map": "/weatherreact/static/js/2.c255bdb0.chunk.js.map",
     "index.html": "/weatherreact/index.html",
-    "precache-manifest.fd41f704732061c1f5934f7f6ee93b76.js": "/weatherreact/precache-manifest.fd41f704732061c1f5934f7f6ee93b76.js",
+    "precache-manifest.27a61c7a8c874038d0336ac8e802de47.js": "/weatherreact/precache-manifest.27a61c7a8c874038d0336ac8e802de47.js",
     "service-worker.js": "/weatherreact/service-worker.js",
     "static/css/2.af3c1da9.chunk.css.map": "/weatherreact/static/css/2.af3c1da9.chunk.css.map",
-    "static/css/main.68e3e929.chunk.css.map": "/weatherreact/static/css/main.68e3e929.chunk.css.map",
-    "static/js/2.5184c740.chunk.js.LICENSE.txt": "/weatherreact/static/js/2.5184c740.chunk.js.LICENSE.txt",
+    "static/css/main.21b10b9d.chunk.css.map": "/weatherreact/static/css/main.21b10b9d.chunk.css.map",
+    "static/js/2.c255bdb0.chunk.js.LICENSE.txt": "/weatherreact/static/js/2.c255bdb0.chunk.js.LICENSE.txt",
     "static/media/15-s.png": "/weatherreact/static/media/15-s.39ac499c.png",
     "static/media/16-s.png": "/weatherreact/static/media/16-s.0cf9cad1.png",
     "static/media/17-s.png": "/weatherreact/static/media/17-s.3c85da3e.png",
@@ -27,8 +27,8 @@
   "entrypoints": [
     "static/js/runtime-main.ed187f85.js",
     "static/css/2.af3c1da9.chunk.css",
-    "static/js/2.5184c740.chunk.js",
-    "static/css/main.68e3e929.chunk.css",
-    "static/js/main.f301d257.chunk.js"
+    "static/js/2.c255bdb0.chunk.js",
+    "static/css/main.21b10b9d.chunk.css",
+    "static/js/main.cae9574d.chunk.js"
   ]
 }

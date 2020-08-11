@@ -1,18 +1,37 @@
-import React from 'react'
-import {
-    // Button,
-    DropdownButton
-} from 'react-bootstrap';
+// import React, { useState } from 'react'
+// import {
+//     // Button,
+//     Form
+// } from 'react-bootstrap';
 
-import './style.css'
+// import './style.css'
 
-const LocationButtons = list => {
-    return (
-        <div className="buttons">
-            <DropdownButton size="sm" id="dropdown-basic-button" title="Selecione uma cidade" />
-            {/* <Button variant="primary" size="sm">Peido</Button> */}
-        </div>
-    )
-}
+// const LocationButtons = cityList => {
+//     const [ cities, setCities ] = useState([])
 
-export default LocationButtons
+//     // console.log(cityList)
+//     const renderCityOptions = async () => {
+//         await cityList.list.map(city => {
+//             const cityName = city.AdministrativeArea.LocalizedName
+//             return (
+//                 <option>{cityName}</option>
+//             )
+//         })
+//     }
+
+//     console.log(renderCityOptions())
+//     return (
+//         <div className="buttons">
+//             <Form>
+//                 <Form.Group>
+//                     <Form.Control size="sm" as="select" placeholder="Enter email">
+//                         {/* {renderCityOptions()} */}
+//                     </Form.Control>
+//                 </Form.Group>
+//             </Form>
+//             {/* <Button variant="primary" size="sm">Peido</Button> */}
+//         </div>
+//     )
+// }
+
+// export default LocationButtons

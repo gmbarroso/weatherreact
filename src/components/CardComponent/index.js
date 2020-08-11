@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Loader } from '../'
 import { Card } from 'react-bootstrap';
 import Error from '../ErrorComponent'
 import { WeatherIcon } from '../'
@@ -18,7 +19,8 @@ const CardComponent = ({
     weatherState,
     period,
     icon,
-    error
+    error,
+    loader
 }) => {
   const { t } = useTranslation('common')
 
@@ -30,10 +32,10 @@ const CardComponent = ({
     </Fragment>
   )
 
-  return (
-    <Card className="card-size">
-      {!error &&
-        <Card.Body>
+  const handleInformation = () => {
+    if (!loader && cityName !== null) {
+      return (
+        <Fragment>
           <Card.Title>
             <div className="cardTitle">
               <span>{cityName}</span>
@@ -63,6 +65,18 @@ const CardComponent = ({
               <div>{t('cards.noRain')}</div>
             }
           </Fragment>
+      </Fragment>
+      )
+    } else {
+       return <Loader />
+    }
+  }
+
+  return (
+    <Card className="card-size">
+      {!error &&
+        <Card.Body>
+          {handleInformation()}
         </Card.Body>
       }
       { handleError(error) }

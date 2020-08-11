@@ -29,7 +29,7 @@
         "changeTheme": "Change theme:",
         "source": "Source: ",
         "error": "Weather information was not loaded",
-        "alert": "Updated weather information"
+        "alert": "Weather information Updated"
     },
     "cards": {
         "now": "Now",

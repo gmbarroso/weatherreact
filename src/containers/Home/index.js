@@ -13,6 +13,7 @@ import {
   getNextDayWeather,
   getUserLocation,
   getDayWeather,
+  getCitiesList
 } from '../../requests'
 
 import {
@@ -54,66 +55,95 @@ const Home = props => {
   const [ isChecked, setChecked ] = useLocalStorage('darkMode', false)
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
+  const [ cities, setCities ] = useState([])
   const showLocationError = () => alert(locationError)
   const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
+
+  const getCities = () => {
+    getCitiesList()
+    .then(value => {
+      setCities(value)
+    })
+    return cities
+  }
+
+  const getCityKey = (e) => {
+    const key = e.target.value
+    getForecast(key, null)
+  }
+
+  const getCityName = key => {
+    const selectedCity = cities.find(city => city.Key === key)
+
+    return {
+      city: selectedCity.LocalizedName,
+      country: selectedCity.Country.EnglishName
+    }
+  }
+
+  const getForecast = (key, location) => {
+    const cityName = location ? location.ParentCity.EnglishName : getCityName(key).city
+    const neighborhood = location ? location.LocalizedName : getCityName(key).country
+    getHourly(key, i18n.language)
+      .then(value => {
+        const forecast = value[0]
+        getDayWeather(key, i18n.language)
+          .then(value => {
+            const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
+
+            setHourly({
+              cityName: cityName,
+              neighborhood: neighborhood,
+              comment: forecast.IconPhrase,
+              min: minimum,
+              max: forecast.Temperature.Value,
+              prec: forecast.Rain.Value,
+              prob: forecast.PrecipitationProbability,
+              dayIcon: forecast.WeatherIcon
+            })
+        })
+      })
+
+    getTwelve(key, i18n.language)
+      .then(value => {
+        const forecast = value[11]
+
+        setTwelve({
+          cityName: cityName,
+          neighborhood: neighborhood,
+          comment: forecast.IconPhrase,
+          max: forecast.Temperature.Value,
+          prec: forecast.Rain.Value,
+          prob: forecast.PrecipitationProbability,
+          dayIcon: forecast.WeatherIcon
+        })
+      })
+
+    getNextDayWeather(key, i18n.language)
+      .then(value => {
+        const forecast = value.DailyForecasts[1]
+
+        setNextDay({
+          cityName: cityName,
+          neighborhood: neighborhood,
+          comment: forecast.Day.IconPhrase,
+          max: forecast.Temperature.Maximum.Value,
+          min: forecast.Temperature.Minimum.Value,
+          prec: forecast.Day.Rain.Value,
+          prob: forecast.Day.PrecipitationProbability,
+          dayIcon: forecast.Day.Icon
+        })
+      })
+  }
 
   const getData = useCallback(() => {
     getUserLocation(latitude, longitude)
         .then(location => {
           if(location) {
             const key = location.Key
-            getHourly(key, i18n.language)
-              .then(value => {
-                const forecast = value[0]
-                getDayWeather(key, i18n.language)
-                  .then(value => {
-                    const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
-
-                    setHourly({
-                      cityName: location.ParentCity.EnglishName,
-                      neighborhood: location.LocalizedName,
-                      comment: forecast.IconPhrase,
-                      min: minimum,
-                      max: forecast.Temperature.Value,
-                      prec: forecast.Rain.Value,
-                      prob: forecast.PrecipitationProbability,
-                      dayIcon: forecast.WeatherIcon
-                    })
-                })
-              })
-
-            getTwelve(key, i18n.language)
-              .then(value => {
-                const forecast = value[11]
-                
-                setTwelve({
-                  cityName: location.ParentCity.EnglishName,
-                  neighborhood: location.LocalizedName,
-                  comment: forecast.IconPhrase,
-                  max: forecast.Temperature.Value,
-                  prec: forecast.Rain.Value,
-                  prob: forecast.PrecipitationProbability,
-                  dayIcon: forecast.WeatherIcon
-                })
-              })
-
-            getNextDayWeather(key, i18n.language)
-              .then(value => {
-                const forecast = value.DailyForecasts[1]
-
-                setNextDay({
-                  cityName: location.ParentCity.EnglishName,
-                  neighborhood: location.LocalizedName,
-                  comment: forecast.Day.IconPhrase,
-                  max: forecast.Temperature.Maximum.Value,
-                  min: forecast.Temperature.Minimum.Value,
-                  prec: forecast.Day.Rain.Value,
-                  prob: forecast.Day.PrecipitationProbability,
-                  dayIcon: forecast.Day.Icon
-                })
-              })
+            getForecast(key, location)
           }
         })
         .catch(errorMessage => errorMessage ? setError(true) : setError(false))
@@ -146,6 +176,7 @@ const Home = props => {
 
   useEffect(() => {
     if (hourly.comment === null) {
+      getCities()
       getData()
       renderLoader()
     }
@@ -161,6 +192,14 @@ const Home = props => {
             <span className="slider round"></span>
           </label>
         </div>
+        {/* <LocationButtons list = { cities } /> */}
+        <select id="city" onChange={e => getCityKey(e)} defaultValue="">
+          <option defaultValue >Selecione uma cidade</option>
+          {cities.map(city => {
+            return <option key={city.LocalizedName} value={city.Key}>{city.LocalizedName} - {city.Country.ID}</option>
+          })}
+        </select>
+        {/* <button>Click Me</button> */}
         <Flags language = { props.lang } />
       </div>
       <div className="home">
@@ -215,9 +254,12 @@ const Home = props => {
             seconds = { 10800 }
             buttonEnabled = { true }
             loader = { renderLoader() }
+            error = { error }
           />
         </div>
-        <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
+        {!error &&
+          <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
+        }
         {locationError && 
           showLocationError()
         }

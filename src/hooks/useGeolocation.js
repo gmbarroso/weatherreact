@@ -11,20 +11,19 @@ const useGeolocation = (options ={}) => {
       setLongitude(longitude)
   }
     
-  const handleError = error => {
-    setError(error.message)
+  const handleError = err => {
+    setError(err.message)
   }
     
   useEffect(() => {
     if(!navigator.geolocation) {
       setError('Location not found')
-      
       return
     }
     
     // navigator.geolocation.getCurrentPosition(handleSuccess, handleError)
     const watcher = navigator.geolocation.watchPosition(handleSuccess, handleError)
-    return () => console.log('hello', navigator.geolocation.clearWatch(watcher)) || navigator.geolocation.clearWatch(watcher)
+    return () => navigator.geolocation.clearWatch(watcher)
   }, [options])
 
   return { latitude, longitude, error }

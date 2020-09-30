@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useCallback, Fragment } from 'react';
 
-// import { Form } from 'react-bootstrap';
-
 import {
   Card,
   Timer,
   Alert,
   Flags,
-  // LocationButtons,
 } from '../../components'
 
 import {
@@ -16,7 +13,6 @@ import {
   getNextDayWeather,
   getUserLocation,
   getDayWeather,
-  // getCitiesList
 } from '../../requests'
 
 import {
@@ -47,7 +43,7 @@ const weatherObject = {
 }
 
 const geoLocationOptions = {
-  timeout: 1000 * 60 * 1 // 1 minute
+  timeout: 1000 * 60 * 1
 }
 
 const Home = props => {
@@ -58,7 +54,6 @@ const Home = props => {
   const [ isChecked, setChecked ] = useLocalStorage('darkMode', false)
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
-  // const [ cities, setCities ] = useState([])
   const showLocationError = () => alert(locationError)
   const { t, i18n } = useTranslation('common')
   
@@ -149,15 +144,7 @@ const Home = props => {
 
   const handleClick = () => setChecked(!isChecked)
 
-  // const getCities = () => {
-  //   getCitiesList()
-  //   .then(value => setCities(value))
-
-  //   return cities
-  // }
-
   useEffect(() => {
-    // getCities()
     if (hourly.comment === null) {
       getData()
       renderLoader()
@@ -174,12 +161,6 @@ const Home = props => {
             <span className="slider round"></span>
           </label>
         </div>
-        {/* <LocationButtons list = { cities } /> */}
-        {/* <select name="city" id="cities">
-          {cities.map(city => {
-            return <option value={city.LocalizedName}>{city.LocalizedName} - {city.Country.ID}</option>
-          })}
-        </select> */}
         <Flags language = { props.lang } />
       </div>
       <div className="home">

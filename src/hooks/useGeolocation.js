@@ -2,17 +2,11 @@ import { useState, useEffect } from 'react'
 
 const useGeolocation = (options ={}) => {
   const [ error, setError ] = useState()
-  // const [location, setLocation] = useState()
   const [ latitude, setLatitude ] = useState()
   const [ longitude, setLongitude ] = useState()
   
   const handleSuccess = position => {
     const { latitude, longitude } = position.coords
-    
-    // setLocation({
-      //   latitude,
-      //   longitude
-      // })
       setLatitude(latitude)
       setLongitude(longitude)
     }

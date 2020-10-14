@@ -13,6 +13,7 @@ import {
   getNextDayWeather,
   getUserLocation,
   getDayWeather,
+  getCitiesList
 } from '../../requests'
 
 import {
@@ -48,76 +49,130 @@ const geoLocationOptions = {
 
 const Home = props => {
   const { latitude, longitude, locationError } = useGeolocation(geoLocationOptions)
+  const [ cityKey, setCityKey ] = useState()
   const [ hourly, setHourly ] = useState(weatherObject)
   const [ twelve, setTwelve ] = useState(weatherObject)
   const [ nextDay, setNextDay ] = useState(weatherObject)
   const [ isChecked, setChecked ] = useLocalStorage('darkMode', false)
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
-  const showLocationError = () => alert(locationError)
+  const [ cities, setCities ] = useState([])
   const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
+
+  const renderError = useCallback(() => {
+    if(!latitude || !longitude) {
+      setError(true)
+    }
+    if(latitude || longitude) {
+      setError(false)
+    }
+    if(cityKey) {
+      setError(false)
+    }
+  }, [latitude, longitude, cityKey])
+
+  const getCities = useCallback(() => {
+    getCitiesList()
+      .then(value => {
+        setCities(value)
+      })
+      .catch(error => error ? setError(true) : setError(false))
+    return cities
+  }, [cities])
+
+  const getCityKey = (e) => {
+    const key = e.target.value
+    getForecast(key, null)
+  }
+
+  const getCityName = useCallback(key => {
+    const selectedCity = cities.find(city => city.Key === key)
+
+    if (selectedCity) {
+      return {
+        city: selectedCity.LocalizedName,
+        country: selectedCity.Country.EnglishName
+      }
+    } else {
+      return {
+        city: null,
+        country: null
+      }
+    }
+  }, [cities])
+
+  const getForecast = useCallback((key, location) => {
+    setCityKey(key)
+    let cityName = location ? location.ParentCity.EnglishName : getCityName(key).city
+    let neighborhood = location ? location.LocalizedName : getCityName(key).country
+    getHourly(key, i18n.language)
+      .then(value => {
+        const forecast = value[0]
+        getDayWeather(key, i18n.language)
+          .then(value => {
+            const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
+
+            setHourly({
+              cityName: cityName,
+              neighborhood: neighborhood,
+              comment: forecast.IconPhrase,
+              min: minimum,
+              max: forecast.Temperature.Value,
+              prec: forecast.Rain.Value,
+              prob: forecast.PrecipitationProbability,
+              dayIcon: forecast.WeatherIcon
+            })
+        })
+        .catch(error => error ? setError(true) : setError(false))
+      })
+      .catch(error => error ? setError(true) : setError(false))
+
+    getTwelve(key, i18n.language)
+      .then(value => {
+        const forecast = value[11]
+
+        setTwelve({
+          cityName: cityName,
+          neighborhood: neighborhood,
+          comment: forecast.IconPhrase,
+          max: forecast.Temperature.Value,
+          prec: forecast.Rain.Value,
+          prob: forecast.PrecipitationProbability,
+          dayIcon: forecast.WeatherIcon
+        })
+      })
+      .catch(error => error ? setError(true) : setError(false))
+
+    getNextDayWeather(key, i18n.language)
+      .then(value => {
+        const forecast = value.DailyForecasts[1]
+
+        setNextDay({
+          cityName: cityName,
+          neighborhood: neighborhood,
+          comment: forecast.Day.IconPhrase,
+          max: forecast.Temperature.Maximum.Value,
+          min: forecast.Temperature.Minimum.Value,
+          prec: forecast.Day.Rain.Value,
+          prob: forecast.Day.PrecipitationProbability,
+          dayIcon: forecast.Day.Icon
+        })
+      })
+      .catch(error => error ? setError(true) : setError(false))
+  }, [setCityKey, i18n, getCityName ])
 
   const getData = useCallback(() => {
     getUserLocation(latitude, longitude)
         .then(location => {
           if(location) {
             const key = location.Key
-            getHourly(key, i18n.language)
-              .then(value => {
-                const forecast = value[0]
-                getDayWeather(key, i18n.language)
-                  .then(value => {
-                    const minimum = value.DailyForecasts[0].Temperature.Minimum.Value
-
-                    setHourly({
-                      cityName: location.ParentCity.EnglishName,
-                      neighborhood: location.LocalizedName,
-                      comment: forecast.IconPhrase,
-                      min: minimum,
-                      max: forecast.Temperature.Value,
-                      prec: forecast.Rain.Value,
-                      prob: forecast.PrecipitationProbability,
-                      dayIcon: forecast.WeatherIcon
-                    })
-                })
-              })
-
-            getTwelve(key, i18n.language)
-              .then(value => {
-                const forecast = value[11]
-                
-                setTwelve({
-                  cityName: location.ParentCity.EnglishName,
-                  neighborhood: location.LocalizedName,
-                  comment: forecast.IconPhrase,
-                  max: forecast.Temperature.Value,
-                  prec: forecast.Rain.Value,
-                  prob: forecast.PrecipitationProbability,
-                  dayIcon: forecast.WeatherIcon
-                })
-              })
-
-            getNextDayWeather(key, i18n.language)
-              .then(value => {
-                const forecast = value.DailyForecasts[1]
-
-                setNextDay({
-                  cityName: location.ParentCity.EnglishName,
-                  neighborhood: location.LocalizedName,
-                  comment: forecast.Day.IconPhrase,
-                  max: forecast.Temperature.Maximum.Value,
-                  min: forecast.Temperature.Minimum.Value,
-                  prec: forecast.Day.Rain.Value,
-                  prob: forecast.Day.PrecipitationProbability,
-                  dayIcon: forecast.Day.Icon
-                })
-              })
+            getForecast(key, location)
           }
         })
-        .catch(errorMessage => errorMessage ? setError(true) : setError(false))
-  }, [i18n, latitude, longitude])
+        .catch(error => error ? setError(true) : setError(false))
+  }, [latitude, longitude, getForecast])
 
   const renderLoader = useCallback(() => {
     const hour = hourly.cityName
@@ -144,12 +199,14 @@ const Home = props => {
 
   const handleClick = () => setChecked(!isChecked)
 
-  useEffect(() => {
+  useEffect(() => {    
     if (hourly.comment === null) {
+      getCities()
       getData()
       renderLoader()
+      renderError()
     }
-  }, [hourly, latitude, longitude, i18n, getData, renderLoader])
+  }, [hourly, latitude, longitude, i18n, cities, getData, renderLoader, getCities, renderError])
 
   return (
     <Fragment>
@@ -161,6 +218,14 @@ const Home = props => {
             <span className="slider round"></span>
           </label>
         </div>
+        {/* <LocationButtons list = { cities } /> */}
+        <select id="city" className="citiesDropdown" onChange={e => getCityKey(e)}>
+          <option defaultValue >Selecione uma cidade</option>
+          {cities.map(city => {
+            return <option key={city.LocalizedName} value={city.Key}>{city.LocalizedName} - {city.Country.ID}</option>
+          })}
+        </select>
+        {/* <button>Click Me</button> */}
         <Flags language = { props.lang } />
       </div>
       <div className="home">
@@ -177,6 +242,7 @@ const Home = props => {
             icon = { hourly.dayIcon }
             error = { error }
             loader = { renderLoader() }
+            sharedLocation = { latitude }
           />
           <Card
             period = { t('cards.nextTwelve') }
@@ -190,6 +256,7 @@ const Home = props => {
             icon = { twelve.dayIcon }
             error = { error }
             loader = { renderLoader() }
+            sharedLocation = { latitude }
           />
           <Card
             period = { t('cards.tomorrow') }
@@ -203,6 +270,7 @@ const Home = props => {
             icon = { nextDay.dayIcon }
             error = { error }
             loader = { renderLoader() }
+            sharedLocation = { latitude }
           />
         </div>
         <Alert
@@ -215,11 +283,14 @@ const Home = props => {
             seconds = { 10800 }
             buttonEnabled = { true }
             loader = { renderLoader() }
+            error = { error }
           />
         </div>
-        <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
-        {locationError && 
-          showLocationError()
+        {!error &&
+          <div className="source">{t('home.source')} <a href="https://www.accuweather.com/" target="_blank" rel="noopener noreferrer">AccuWeather</a></div>
+        }
+        {locationError &&
+          locationError
         }
       </div>
     </Fragment>

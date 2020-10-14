@@ -28,7 +28,6 @@
     "home": {
         "changeTheme": "Change theme:",
         "source": "Source: ",
-        "error": "Weather information was not loaded",
         "alert": "Weather information Updated"
     },
     "cards": {
@@ -42,5 +41,9 @@
         "button": "Update now",
         "hour": "h ",
         "minutes": "m "
+    },
+        "error": {
+        "sharedLocation": "Location not shared. Please, select a city or share your location",
+        "forecastInformation": "Weather information was not loaded"
     }
 }

@@ -11,7 +11,8 @@ const Timer = ({
   isReseted,
   seconds,
   buttonEnabled,
-  loader
+  loader,
+  error
 }) => {
   const [timeLeft, setTimeLeft] = useLocalStorage('timeLeft', seconds);
   const [ buttonDisabled, setButtonDisabled ] = useLocalStorage('buttonEnabled', false)
@@ -80,7 +81,11 @@ const Timer = ({
 
   return (
     <div className="timer">
-      {renderTimer()}
+      {!error &&
+      <Fragment>
+        {renderTimer()}
+      </Fragment>
+      }
     </div>
   );
 };

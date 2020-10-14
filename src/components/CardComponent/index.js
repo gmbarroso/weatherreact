@@ -20,14 +20,18 @@ const CardComponent = ({
     period,
     icon,
     error,
-    loader
+    loader,
+    sharedLocation
 }) => {
   const { t } = useTranslation('common')
 
-  const handleError = error => (
+  const handleError = (error, sharedLocation) => (
     <Fragment>
-      {error &&
-        <Error />
+      {(error && !sharedLocation) &&
+        <Error locationError={sharedLocation}/>
+      }
+      {(error && sharedLocation && !cityName) &&
+        <Error locationError={sharedLocation}/>
       }
     </Fragment>
   )
@@ -79,7 +83,7 @@ const CardComponent = ({
           {handleInformation()}
         </Card.Body>
       }
-      { handleError(error) }
+      { handleError(error, sharedLocation) }
     </Card>
   )
 }

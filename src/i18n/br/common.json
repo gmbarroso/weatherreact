@@ -28,7 +28,6 @@
     "home": {
         "changeTheme": "Mudar tema:",
         "source": "Fonte: ",
-        "error": "As informações de clima não foram carregadas",
         "alert": "Informações de clima atualizadas"
     },
     "cards": {
@@ -42,5 +41,9 @@
         "button": "Atualizar agora",
         "hour": "h ",
         "minutes": "m "
+    },
+    "error": {
+        "sharedLocation": "Localização não compartilhada. Por favor, selecione uma cidade ou compartilhe sua localização.",
+        "forecastInformation": "As informações de clima não foram carregadas"
     }
 }

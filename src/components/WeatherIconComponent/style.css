@@ -1,3 +1,18 @@
 .icon {
+    position: absolue;
     width: 200px;
+    top: 50%;
+    left: 50%;
+    /* transform: translateX(-50%) translateY(-50%); */
+    animation-duration: 2s;
+    animation-fill-mode: both;
+    animation-name: fadeInBottom;
   }
+
+  @keyframes fadeInBottom {
+    from {
+        opacity: 0;
+        transform: translateY(50%);
+    }
+    to { opacity: 1 }
+}

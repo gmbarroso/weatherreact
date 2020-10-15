@@ -43,10 +43,10 @@ const CardComponent = ({
           <Card.Title>
             <div className="cardTitle">
               <span>{cityName}</span>
-              <span className="period">{period}</span>
+              <span className="period" id="period">{period}</span>
             </div>
           </Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{neighborhood}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 subtitle" id="card-sub">{neighborhood}</Card.Subtitle>
           <Fragment>
             <div className="temperatures">
               <div className="weatherStatus">
@@ -57,7 +57,7 @@ const CardComponent = ({
               <span className="weatherState">{weatherState}</span>
               <span className="max">{maxTemp} ºC</span>
               {minTemp &&
-                <span className="min">{minTemp} ºC</span>
+                <span className="min" id="min">{minTemp} ºC</span>
               }
             </div>
             {rainPrec !== 0 &&

@@ -46,7 +46,7 @@ const CardComponent = ({
               <span className="period">{period}</span>
             </div>
           </Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{neighborhood}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 subtitle">{neighborhood}</Card.Subtitle>
           <Fragment>
             <div className="temperatures">
               <div className="weatherStatus">

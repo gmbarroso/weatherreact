@@ -20,8 +20,7 @@ const CardComponent = ({
     period,
     icon,
     error,
-    loader,
-    sharedLocation
+    sharedLocation,
 }) => {
   const { t } = useTranslation('common')
 
@@ -37,7 +36,7 @@ const CardComponent = ({
   )
 
   const handleInformation = () => {
-    if (!loader && cityName !== null) {
+    if (cityName !== null) {
       return (
         <Fragment>
           <Card.Title>
@@ -71,8 +70,10 @@ const CardComponent = ({
           </Fragment>
       </Fragment>
       )
-    } else {
-       return <Loader />
+    }
+
+    if(cityName === null) {
+      return <Loader />
     }
   }
 

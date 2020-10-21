@@ -177,19 +177,6 @@ const Home = props => {
         .catch(error => error ? setError(true) : setError(false))
   }, [latitude, longitude, getForecast])
 
-  const renderLoader = useCallback(() => {
-    console.log(selectedCity)
-    const hour = hourly.cityName
-    const twe = twelve.cityName
-    const next = nextDay.cityName
-
-    if (hour && twe && next) {
-      return false
-    } else {
-      return true
-    }
-  }, [hourly.cityName, twelve.cityName, nextDay.cityName])
-
   const handleReset = (value) => {
     if(value) {
       getData()
@@ -207,10 +194,9 @@ const Home = props => {
     if (hourly.comment === null) {
       getCities()
       getData()
-      renderLoader()
       renderError()
     }
-  }, [hourly, latitude, longitude, i18n, cities, getData, renderLoader, getCities, renderError])
+  }, [hourly, latitude, longitude, i18n, cities, getData, getCities, renderError])
 
   return (
     <Fragment>
@@ -245,7 +231,6 @@ const Home = props => {
             rainProb = { hourly.prob }
             icon = { hourly.dayIcon }
             error = { error }
-            loader = { renderLoader() }
             sharedLocation = { latitude }
           />
           <Card
@@ -259,7 +244,6 @@ const Home = props => {
             rainProb = { twelve.prob }
             icon = { twelve.dayIcon }
             error = { error }
-            loader = { renderLoader() }
             sharedLocation = { latitude }
           />
           <Card
@@ -273,7 +257,6 @@ const Home = props => {
             rainProb = { nextDay.prob }
             icon = { nextDay.dayIcon }
             error = { error }
-            loader = { renderLoader() }
             sharedLocation = { latitude }
           />
         </div>
@@ -286,8 +269,8 @@ const Home = props => {
             isReseted = { handleReset }
             seconds = { 10800 }
             buttonEnabled = { true }
-            loader = { renderLoader() }
             error = { error }
+            cityName = { hourly.cityName }
           />
         </div>
         {!error &&

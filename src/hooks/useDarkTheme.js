@@ -9,7 +9,7 @@ const useDarkTheme = (checked) => {
             document.getElementsByClassName('card-size card')[0].style.backgroundColor = '#A9A9A9'
             document.getElementsByClassName('card-size card')[1].style.backgroundColor = '#A9A9A9'
             document.getElementsByClassName('card-size card')[2].style.backgroundColor = '#A9A9A9'
-            if (stylePeriodArray.length !== 0) {
+            if (stylePeriodArray.length === 3) {
                 document.getElementsByClassName('period')[0].style.color = '#505050'
                 document.getElementsByClassName('period')[1].style.color = '#505050'
                 document.getElementsByClassName('period')[2].style.color = '#505050'
@@ -31,7 +31,7 @@ const useDarkTheme = (checked) => {
             document.getElementsByClassName('card-size card')[0].style.backgroundColor = 'white'
             document.getElementsByClassName('card-size card')[1].style.backgroundColor = 'white'
             document.getElementsByClassName('card-size card')[2].style.backgroundColor = 'white'
-            if (stylePeriodArray.length !== 0) {
+            if (stylePeriodArray.length === 3) {
                 document.getElementsByClassName('period')[0].style.color = '#6c757d'
                 document.getElementsByClassName('period')[1].style.color = '#6c757d'
                 document.getElementsByClassName('period')[2].style.color = '#6c757d'

@@ -57,6 +57,7 @@ const Home = props => {
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
   const [ cities, setCities ] = useState([])
+  const [ selectedCity, setSelectedCity ] = useState([])
   const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
@@ -84,6 +85,8 @@ const Home = props => {
 
   const getCityKey = (e) => {
     const key = e.target.value
+    if(key === "0") return
+    setSelectedCity(key)
     getForecast(key, null)
   }
 
@@ -175,6 +178,7 @@ const Home = props => {
   }, [latitude, longitude, getForecast])
 
   const renderLoader = useCallback(() => {
+    console.log(selectedCity)
     const hour = hourly.cityName
     const twe = twelve.cityName
     const next = nextDay.cityName
@@ -199,7 +203,7 @@ const Home = props => {
 
   const handleClick = () => setChecked(!isChecked)
 
-  useEffect(() => {    
+  useEffect(() => {
     if (hourly.comment === null) {
       getCities()
       getData()
@@ -220,7 +224,7 @@ const Home = props => {
         </div>
         {/* <LocationButtons list = { cities } /> */}
         <select id="city" className="citiesDropdown" onChange={e => getCityKey(e)}>
-          <option defaultValue >Selecione uma cidade</option>
+          <option defaultValue value={"0"} >Selecione uma cidade</option>
           {cities.map(city => {
             return <option key={city.LocalizedName} value={city.Key}>{city.LocalizedName} - {city.Country.ID}</option>
           })}

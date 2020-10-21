@@ -57,7 +57,6 @@ const Home = props => {
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
   const [ cities, setCities ] = useState([])
-  const [ selectedCity, setSelectedCity ] = useState([])
   const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
@@ -86,8 +85,10 @@ const Home = props => {
   const getCityKey = (e) => {
     const key = e.target.value
     if(key === "0") return
-    setSelectedCity(key)
     getForecast(key, null)
+    setHourly({ ...hourly, cityName: null})
+    setTwelve({ ...twelve, cityName: null})
+    setNextDay({ ...nextDay, cityName: null})
   }
 
   const getCityName = useCallback(key => {

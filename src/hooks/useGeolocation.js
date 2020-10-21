@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 const useGeolocation = (options ={}) => {
-  // const [ error, setError ] = useState()
+  const [ error, setError ] = useState()
   const [ latitude, setLatitude ] = useState()
   const [ longitude, setLongitude ] = useState()
   
@@ -11,25 +11,25 @@ const useGeolocation = (options ={}) => {
       setLongitude(longitude)
   }
     
-  // const handleError = err => {
-  //   setError(err.message)
-  // }
+  const handleError = err => {
+    setError(err.message)
+  }
     
   useEffect(() => {
-    // if(!navigator.geolocation) {
-    //   setError('Location not found')
-    //   return
-    // }
+    if(!navigator.geolocation) {
+      setError('Location not found')
+      return
+    }
     
     // navigator.geolocation.getCurrentPosition(handleSuccess, handleError)
-    const watcher = navigator.geolocation.watchPosition(handleSuccess)
+    const watcher = navigator.geolocation.watchPosition(handleSuccess, handleError)
     return () => navigator.geolocation.clearWatch(watcher)
   }, [options])
 
   return {
     latitude,
     longitude,
-    // error
+    error
   }
 }
 

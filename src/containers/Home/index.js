@@ -57,6 +57,7 @@ const Home = props => {
   const [ showAlert, setShowAlert ] = useState(false)  
   const [ error, setError ] = useState(null)
   const [ cities, setCities ] = useState([])
+  const [ selectedCity, setSelectedCity ] = useState([])
   const { t, i18n } = useTranslation('common')
   
   useDarkTheme(isChecked)
@@ -84,6 +85,8 @@ const Home = props => {
 
   const getCityKey = (e) => {
     const key = e.target.value
+    if(key === "0") return
+    setSelectedCity(key)
     getForecast(key, null)
   }
 
@@ -174,18 +177,6 @@ const Home = props => {
         .catch(error => error ? setError(true) : setError(false))
   }, [latitude, longitude, getForecast])
 
-  const renderLoader = useCallback(() => {
-    const hour = hourly.cityName
-    const twe = twelve.cityName
-    const next = nextDay.cityName
-
-    if (hour && twe && next) {
-      return false
-    } else {
-      return true
-    }
-  }, [hourly.cityName, twelve.cityName, nextDay.cityName])
-
   const handleReset = (value) => {
     if(value) {
       getData()
@@ -199,14 +190,13 @@ const Home = props => {
 
   const handleClick = () => setChecked(!isChecked)
 
-  useEffect(() => {    
+  useEffect(() => {
     if (hourly.comment === null) {
       getCities()
       getData()
-      renderLoader()
       renderError()
     }
-  }, [hourly, latitude, longitude, i18n, cities, getData, renderLoader, getCities, renderError])
+  }, [hourly, latitude, longitude, i18n, cities, getData, getCities, renderError])
 
   return (
     <Fragment>
@@ -220,7 +210,7 @@ const Home = props => {
         </div>
         {/* <LocationButtons list = { cities } /> */}
         <select id="city" className="citiesDropdown" onChange={e => getCityKey(e)}>
-          <option defaultValue >Selecione uma cidade</option>
+          <option defaultValue value={"0"} >Selecione uma cidade</option>
           {cities.map(city => {
             return <option key={city.LocalizedName} value={city.Key}>{city.LocalizedName} - {city.Country.ID}</option>
           })}
@@ -241,7 +231,6 @@ const Home = props => {
             rainProb = { hourly.prob }
             icon = { hourly.dayIcon }
             error = { error }
-            loader = { renderLoader() }
             sharedLocation = { latitude }
           />
           <Card
@@ -255,7 +244,6 @@ const Home = props => {
             rainProb = { twelve.prob }
             icon = { twelve.dayIcon }
             error = { error }
-            loader = { renderLoader() }
             sharedLocation = { latitude }
           />
           <Card
@@ -269,7 +257,6 @@ const Home = props => {
             rainProb = { nextDay.prob }
             icon = { nextDay.dayIcon }
             error = { error }
-            loader = { renderLoader() }
             sharedLocation = { latitude }
           />
         </div>
@@ -282,8 +269,8 @@ const Home = props => {
             isReseted = { handleReset }
             seconds = { 10800 }
             buttonEnabled = { true }
-            loader = { renderLoader() }
             error = { error }
+            cityName = { hourly.cityName }
           />
         </div>
         {!error &&

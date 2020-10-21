@@ -11,7 +11,7 @@ const Timer = ({
   isReseted,
   seconds,
   buttonEnabled,
-  loader,
+  cityName,
   error
 }) => {
   const [timeLeft, setTimeLeft] = useLocalStorage('timeLeft', seconds);
@@ -25,7 +25,7 @@ const Timer = ({
   }, [seconds, isReseted, buttonDisabled, setButtonDisabled, setTimeLeft])
 
   const renderTimer = () => {
-    if(!loader) {
+    if(cityName !== null) {
       return (
         <Fragment>
           <h5>{t('timer.title')}</h5>

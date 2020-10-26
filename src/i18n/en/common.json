@@ -28,7 +28,8 @@
     "home": {
         "changeTheme": "Change theme:",
         "source": "Source: ",
-        "alert": "Weather information Updated"
+        "alert": "Weather information Updated",
+        "selectCity": "Select a city"
     },
     "cards": {
         "now": "Now",
@@ -42,8 +43,13 @@
         "hour": "h ",
         "minutes": "m "
     },
-        "error": {
+    "error": {
         "sharedLocation": "Location not shared. Please, select a city or share your location",
         "forecastInformation": "Weather information was not loaded"
+    },
+    "modal": {
+        "title": "Warning!",
+        "message": "Changing the language will reset the weather forecast for your shared location.",
+        "confirm": "Confirm"
     }
 }

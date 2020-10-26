@@ -28,7 +28,8 @@
     "home": {
         "changeTheme": "Mudar tema:",
         "source": "Fonte: ",
-        "alert": "Informações de clima atualizadas"
+        "alert": "Informações de clima atualizadas",
+        "selectCity": "Selecione uma cidade"
     },
     "cards": {
         "now": "Agora",
@@ -45,5 +46,10 @@
     "error": {
         "sharedLocation": "Localização não compartilhada. Por favor, selecione uma cidade ou compartilhe sua localização.",
         "forecastInformation": "As informações de clima não foram carregadas"
+    },
+    "modal": {
+        "title": "Atenção!",
+        "message": "Mudar o idioma irá resetar a previsão do tempo para a sua localização compartilhada.",
+        "confirm": "Confirmar"
     }
 }

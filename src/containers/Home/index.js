@@ -192,7 +192,7 @@ const Home = props => {
       setShowAlert(false)
     }, 3000)
   }
-  
+
   const handleClick = () => setChecked(!isChecked)
 
   useEffect(() => {
@@ -215,7 +215,7 @@ const Home = props => {
         </div>
         {/* <LocationButtons list = { cities } /> */}
         <select id="city" className="citiesDropdown" onChange={e => getCityKey(e)}>
-          <option defaultValue value={"0"} >Selecione uma cidade</option>
+          <option defaultValue value={"0"} >{t('home.selectCity')}</option>
           {cities.map(city => {
             return <option key={city.LocalizedName} value={city.Key}>{city.LocalizedName} - {city.Country.ID}</option>
           })}
@@ -291,9 +291,9 @@ const Home = props => {
       </div>
       <ConfirmModal
           show = { showModal }
-          message = 'Ao mudar o idioma a previsão do tempo será resetada.'
+          message = {t('modal.message')}
           onHide = { () => setShowModal(false) }
-          title = 'Tem certeza que deseja resetar?'
+          title = {t('modal.title')}
           getLang = { getLang }
           language = {props.lang}
       />

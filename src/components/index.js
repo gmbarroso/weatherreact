@@ -7,6 +7,7 @@ import Flags from './FlagsComponent'
 import Error from './ErrorComponent'
 import LocationButtons from './LocationButtons'
 import Loader from './Loader'
+import ConfirmModal from './ConfirmModalComponent'
 
 export {
     Alert,
@@ -17,5 +18,6 @@ export {
     Flags,
     Error,
     LocationButtons,
-    Loader
+    Loader,
+    ConfirmModal
 }

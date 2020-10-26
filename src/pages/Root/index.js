@@ -15,10 +15,12 @@ import {
 const Root = () => {
   const { i18n } = useTranslation('common')
 
+
   const handleLanguage = lang => {
     i18n.changeLanguage(lang)
     return lang
   }
+
   return (
     <Fragment>
       <Header />

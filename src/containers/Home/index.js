@@ -5,6 +5,7 @@ import {
   Timer,
   Alert,
   Flags,
+  ConfirmModal
 } from '../../components'
 
 import {
@@ -58,6 +59,9 @@ const Home = props => {
   const [ error, setError ] = useState(null)
   const [ cities, setCities ] = useState([])
   const { t, i18n } = useTranslation('common')
+  const [ showModal, setShowModal ] = useState(false)
+  const [ getLang, setGetLang ] = useState('br')
+
   
   useDarkTheme(isChecked)
 
@@ -178,7 +182,7 @@ const Home = props => {
         .catch(error => error ? setError(true) : setError(false))
   }, [latitude, longitude, getForecast])
 
-  const handleReset = (value) => {
+  const handleReset = value => {
     if(value) {
       getData()
       setShowAlert(true)
@@ -188,7 +192,7 @@ const Home = props => {
       setShowAlert(false)
     }, 3000)
   }
-
+  
   const handleClick = () => setChecked(!isChecked)
 
   useEffect(() => {
@@ -216,8 +220,12 @@ const Home = props => {
             return <option key={city.LocalizedName} value={city.Key}>{city.LocalizedName} - {city.Country.ID}</option>
           })}
         </select>
-        {/* <button>Click Me</button> */}
-        <Flags language = { props.lang } />
+        {/* <button onClick={() => setShowModal(true)}>Click Me</button> */}
+        <Flags
+          getLang = { setGetLang }
+          setShow = { setShowModal }
+          language = { props.lang }
+        />
       </div>
       <div className="home">
         <div className="card-container">
@@ -281,6 +289,14 @@ const Home = props => {
           locationError
         }
       </div>
+      <ConfirmModal
+          show = { showModal }
+          message = 'Ao mudar o idioma a previsão do tempo será resetada.'
+          onHide = { () => setShowModal(false) }
+          title = 'Tem certeza que deseja resetar?'
+          getLang = { getLang }
+          language = {props.lang}
+      />
     </Fragment>
   )
 }
